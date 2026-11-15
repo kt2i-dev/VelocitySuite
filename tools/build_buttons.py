@@ -1,40 +1,40 @@
 """Builds docs/buttons.html (the Button standard) from the lists below.
 
 Edit BUTTONS / PLACEMENT here, then run:  python3 tools/build_buttons.py
-Icons are drawn inline for the mockups; ICON_FA is the Font Awesome name to pick in ODC Studio
-(not yet checked against the app's icon library).
+Icons are drawn inline for the mockups; the second value is the Phosphor 2.0 icon name to pick in
+ODC Studio (the app's icon library).
 """
 from pathlib import Path
 
-# 24x24 stroke icons for the samples, and the Font Awesome name to use in OutSystems
+# 24x24 stroke icons for the samples, and the Phosphor 2.0 name to use in OutSystems
 ICONS = {
     "plus": ("M12 5v14M5 12h14", "plus"),
-    "pencil": ("M4 20h4L19 9l-4-4L4 16v4z", "pencil"),
-    "save": ("M5 3h11l3 3v15H5zM8 3v5h7V3M8 21v-7h8v7", "floppy-o"),
-    "send": ("M22 2 11 13M22 2l-7 20-4-9-9-4z", "paper-plane"),
-    "x": ("M6 6l12 12M18 6 6 18", "times"),
+    "pencil": ("M4 20h4L19 9l-4-4L4 16v4z", "pencil-simple"),
+    "save": ("M5 3h11l3 3v15H5zM8 3v5h7V3M8 21v-7h8v7", "floppy-disk"),
+    "send": ("M22 2 11 13M22 2l-7 20-4-9-9-4z", "paper-plane-tilt"),
+    "x": ("M6 6l12 12M18 6 6 18", "x"),
     "trash": ("M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14", "trash"),
     "user": ("M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4 4-6 8-6s8 2 8 6", "user"),
     "trace": ("M5 12h14M13 6l6 6-6 6", "arrow-right"),
-    "hold": ("M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM10 9v6M14 9v6", "pause-circle-o"),
-    "file": ("M6 2h9l5 5v15H6zM14 2v6h6", "file-text-o"),
-    "users": ("M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20c0-3 3-5 6-5s6 2 6 5M16 5a3 3 0 0 1 0 6M21 20c0-3-2-5-4-5", "users"),
-    "shield": ("M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z", "shield"),
-    "refresh": ("M20 12a8 8 0 1 1-3-6.3M20 4v5h-5", "refresh"),
+    "hold": ("M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM10 9v6M14 9v6", "pause-circle"),
+    "file": ("M6 2h9l5 5v15H6zM14 2v6h6", "file-text"),
+    "users": ("M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20c0-3 3-5 6-5s6 2 6 5M16 5a3 3 0 0 1 0 6M21 20c0-3-2-5-4-5", "users-three"),
+    "shield": ("M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z", "shield-check"),
+    "refresh": ("M20 12a8 8 0 1 1-3-6.3M20 4v5h-5", "arrows-clockwise"),
     "check": ("M5 12l5 5 9-10", "check"),
-    "flag": ("M5 21V4M5 4h12l-2 4 2 4H5", "flag-o"),
-    "undo": ("M4 12a8 8 0 1 0 3-6.3M4 4v5h5", "undo"),
-    "download": ("M12 3v12M7 10l5 5 5-5M5 21h14", "download"),
-    "search": ("M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM21 21l-5-5", "search"),
-    "more": ("M6 12h.01M12 12h.01M18 12h.01", "ellipsis-h"),
+    "flag": ("M5 21V4M5 4h12l-2 4 2 4H5", "flag"),
+    "undo": ("M4 12a8 8 0 1 0 3-6.3M4 4v5h5", "arrow-counter-clockwise"),
+    "download": ("M12 3v12M7 10l5 5 5-5M5 21h14", "download-simple"),
+    "search": ("M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM21 21l-5-5", "magnifying-glass"),
+    "more": ("M6 12h.01M12 12h.01M18 12h.01", "dots-three"),
     "camera": ("M4 7h4l2-3h4l2 3h4v12H4zM12 17a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z", "camera"),
     "clip": ("M21 12l-8 8a5 5 0 0 1-7-7l9-9a3 3 0 0 1 4 4l-9 9a1 1 0 0 1-2-2l8-8", "paperclip"),
-    "comment": ("M4 4h16v12H8l-4 4z", "comment-o"),
-    "bell": ("M6 16v-5a6 6 0 0 1 12 0v5l2 2H4zM10 21h4", "bell-o"),
+    "comment": ("M4 4h16v12H8l-4 4z", "chat-text"),
+    "bell": ("M6 16v-5a6 6 0 0 1 12 0v5l2 2H4zM10 21h4", "bell"),
     "eye": ("M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z", "eye"),
     "back": ("M19 12H5M11 6l-6 6 6 6", "arrow-left"),
-    "spark": ("M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z", "magic"),
-    "power": ("M12 3v9M6.3 6.3a8 8 0 1 0 11.4 0", "power-off"),
+    "spark": ("M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z", "sparkle"),
+    "power": ("M12 3v9M6.3 6.3a8 8 0 1 0 11.4 0", "power"),
 }
 
 
@@ -140,7 +140,7 @@ def build():
 <table class="dm"><thead><tr><th>Button</th><th>Class</th><th>Icon</th><th>Where it goes · how it’s built</th></tr></thead><tbody>
 {''.join(rows)}
 </tbody></table>
-<p class="muted">Icon names are Font Awesome names to pick in ODC Studio’s icon picker. Not yet checked against the app, whose AI mentor review found about 120 icons that don’t exist in its current library.</p>
+<p class="muted">Icon names are <strong>Phosphor 2.0</strong>, the app’s icon library: pick them by these names in ODC Studio’s icon picker. Use the regular weight everywhere. The AI mentor review found about 120 icon references that don’t resolve in the app; replace each with the name from this table.</p>
 </div>
 
 <h2>The button blocks</h2>
