@@ -28,7 +28,9 @@ branch → main / docs**). No build step and no workflow.
 | `docs/<sector>/about.html` | About the sector (not written yet) |
 | `docs/<sector>/<app>/index.html` | An application's page: its About tile, then its screens (none yet) |
 | `docs/<sector>/<app>/about.html` | About the application (not written yet) |
+| `docs/manufacturing/quality/` | Quality Assurance (QE / NCR / MRB / CAPA / SCAR): its page, About, and data model |
 | `docs/assets/site.css` | Shared styles for every page |
+| `tools/build_data_model.py` | Builds the QA data model page. Edit the entity list there and rerun it, rather than editing `data-model.html` |
 
 ## Coming soon
 

@@ -29,6 +29,29 @@ a.tile:hover{border-color:#0a5bd3}
 .upd ul{margin:0;padding-left:18px}.upd li{margin:4px 0;overflow-wrap:anywhere}
 a.inl{font-weight:500;color:#0a5bd3;text-decoration:none}
 
+/* Prose cards (About pages, reference pages) */
+.card{background:#fff;border:1px solid #dde2e9;border-radius:10px;padding:16px 20px;margin-bottom:12px;font-size:14px;line-height:1.55}
+.card p{color:#1c2431;margin:0 0 10px}.card p:last-child{margin-bottom:0}
+.card h3{margin:14px 0 6px}.card h3:first-child{margin-top:0}
+.card ul{margin:0 0 10px;padding-left:18px}.card li{margin:3px 0}.card ul:last-child{margin-bottom:0}
+.muted{color:#5b6575}
+.crumbs{font-size:13px;color:#5b6575;margin:0 0 6px}.crumbs a{color:#0a5bd3;text-decoration:none}
+
+/* A workflow as a row of steps */
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0 10px;font-size:13px}
+.flow b{font-weight:500;background:#e3edfb;color:#0a3f8f;border-radius:999px;padding:3px 10px}
+.flow i{font-style:normal;color:#8a93a1}
+
+/* Data model tables */
+table.dm{width:100%;border-collapse:collapse;font-size:13px;margin:4px 0 6px}
+table.dm th,table.dm td{text-align:left;padding:5px 8px;border-top:1px solid #eef1f5;vertical-align:top}
+table.dm th{font-size:12px;color:#5b6575;font-weight:600;border-top:0}
+table.dm td:first-child{white-space:nowrap}
+table.dm td.grp{font-size:12px;font-weight:600;color:#5b6575;text-transform:uppercase;letter-spacing:.04em;padding-top:12px}
+.req{color:#b42318;font-weight:600}
+.toc{display:flex;flex-wrap:wrap;gap:6px;font-size:13px;margin:0 0 12px}
+.toc a{background:#fff;border:1px solid #dde2e9;border-radius:999px;padding:3px 10px;color:#0a5bd3;text-decoration:none}
+
 /* "Mockups home" link at the top right of every page except the start page */
 .mock-home{display:flex;justify-content:flex-end;margin:0 0 16px}
 .mock-home a{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border:1px dashed #9aa4b2;border-radius:8px;background:#fffbe8;color:#2b3340;font-size:14px;font-weight:600;text-decoration:none}
