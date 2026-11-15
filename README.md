@@ -14,7 +14,7 @@ Locally: open `docs/index.html` in a browser, or serve the folder:
 python3 -m http.server -d docs 8000
 ```
 
-Live site: GitHub Pages serves the `docs/` folder of `main` (repo **Settings → Pages → Deploy from a
+**Live site (no login): https://kt2i-dev.github.io/VelocitySuite/** — GitHub Pages serves the `docs/` folder of `main` (repo **Settings → Pages → Deploy from a
 branch → main / docs**). No build step and no workflow.
 
 ## Layout
