@@ -62,7 +62,21 @@ table.dm td.grp{font-size:12px;font-weight:600;color:#5b6575;text-transform:uppe
 .area-card li:first-child{border-top:0}
 .area-card li a{color:#0a5bd3;font-weight:500;text-decoration:none}
 .area-card .soon{font-size:10px;margin-left:6px}
-.wip{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:999px;background:#e3edfb;color:#0a3f8f;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;vertical-align:1px}
+.wip,.tile span.wip{display:inline-block;margin:0 0 0 8px;padding:1px 8px;border-radius:999px;background:#e3edfb;color:#0a3f8f;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;vertical-align:1px}
+
+/* Button samples (Button standard page): btn, btn-primary, btn-delete as the app will draw them */
+.btn{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border:1px solid #0a5bd3;border-radius:6px;background:#fff;color:#0a5bd3;font:500 13px Inter,system-ui,sans-serif;white-space:nowrap;cursor:default}
+.btn svg{width:15px;height:15px;flex:none}
+.btn-primary{background:#0a5bd3;color:#fff}
+.btn-delete{border-color:#c62828;color:#c62828}
+.btn[disabled]{opacity:.45}
+.btn-sm{height:28px;padding:0 10px;font-size:12px}
+.btn-icon{width:28px;padding:0;justify-content:center}
+.btn-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 10px}
+.btn-row .sep{width:1px;height:24px;background:#dde2e9;margin:0 4px}
+table.dm td .btn{margin:0}
+table.dm code{white-space:nowrap}
+.ours{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:999px;background:#e8f5ec;color:#1d6b35;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;vertical-align:1px}
 
 /* "Mockups home" link at the top right of every page except the start page */
 .mock-home{display:flex;justify-content:flex-end;margin:0 0 16px}

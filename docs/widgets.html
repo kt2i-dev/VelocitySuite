@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Custom Widgets</title>
+<link rel="stylesheet" href="assets/site.css"></head>
+<body><main><nav class="mock-home" aria-label="Mockup navigation"><a href="index.html"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Mockups home</a></nav><h1>Custom widgets</h1>
+<p>The shared blocks every Velocity Suite application uses, what they take and when to use them. Build each once and reuse it; don’t change one for a single screen. The button blocks are on the <a class="inl" href="buttons.html">Button standard</a>.</p>
+<div class="toc"><a href="#carried">From LifeView</a><a href="#new">New for Velocity Suite</a><a href="#ai">AI assistant and agents</a><a href="#not">Not carried over</a></div>
+
+<h2 id="carried">Carried over from LifeView</h2>
+<p>General enough to reuse, adapted for Velocity Suite.</p>
+<div class="card">
+<h3>DateFormat</h3>
+<p>Every date shown as text: list columns, record headers and detail screens.</p>
+<ul>
+<li><strong>Inputs:</strong> <code>Date</code> (DateTime, mandatory), <code>ShowTime</code> (Boolean, default False), <code>ExtendedClass</code>.</li>
+<li><strong>Shows:</strong> “Aug 25, 2026”, or “Aug 25, 2026 09:12” with <code>ShowTime</code>, never wrapping. <strong>Blank for a null date</strong> (OutSystems’ null date is 01/01/1900): no N/A, no placeholder date.</li>
+<li>The format follows the mockups; LifeView used MM/dd/yyyy. <span class="muted">To confirm.</span></li>
+</ul>
+<h3>RecordHeader <span class="muted" style="font-weight:400">(LifeView’s StickyPageHeader)</span></h3>
+<p>The persistent header of every record workspace: “context before forms”. It stays in view while the page scrolls, so the record and its buttons are always visible.</p>
+<ul>
+<li><strong>Inputs:</strong> <code>RecordNumber</code>, <code>Title</code>, <code>Status</code>, <code>Severity</code>, <code>Owner</code>, and a <code>Fields</code> list of the key identifiers (part, lot, supplier, work order, related Quality Event). Optional <code>BackLabel</code> (blank = “Back”).</li>
+<li><strong>Placeholder:</strong> <code>Buttons</code>, for the header buttons as the Button standard places them.</li>
+<li><strong>Event:</strong> <code>BackClicked</code>.</li>
+<li>Uses StatusBadge for status and severity.</li>
+</ul>
+<h3>ButtonApply / ButtonClear <span class="muted" style="font-weight:400">(LifeView’s ButtonSearch / ButtonReset)</span></h3>
+<p>The two filter-panel buttons, renamed to the mockups’ labels. Same inputs as the other button blocks; no logic of their own.</p>
+<h3>The button block pattern and the table class</h3>
+<ul>
+<li>Every button block takes <code>IsEnabled</code> and <code>ExtendedClass</code> and raises <code>Clicked</code>. See the <a class="inl" href="buttons.html">Button standard</a>.</li>
+<li>Every list table gets one theme class (LifeView’s <code>app-table</code>): header in the theme’s primary color, row striping and small row buttons.</li>
+</ul>
+</div>
+
+<h2 id="new">New for Velocity Suite</h2>
+<p>The reusable components the UI/UX specification lists, plus two the screens need. All are planned: inputs will firm up as the screens are built.</p>
+<div class="card">
+<h3>StatusBadge</h3>
+<p>Every status and severity: a colored pill (Draft, Investigation, Closed; Low, Medium, High, Critical). Inputs: <code>Label</code>, <code>Kind</code> (status / severity / hold). Also draws the <strong>HOLD</strong>, <strong>SHIPPED</strong> and <strong>CUSTOMER</strong> markers on lots (BR-006).</p>
+<h3>WorkflowStepper</h3>
+<p>A record’s lifecycle with the current step highlighted, from its status list. Replaces the app’s four separate status wizards (CAPA, NCR, MRB, SCAR), which don’t refresh when their input changes and use a deprecated pattern. Inputs: <code>Steps</code> list, <code>CurrentStep</code>.</p>
+<h3>ActivityTimeline</h3>
+<p>The chronological history on every record (Quality Event, NCR, MRB, CAPA, SCAR): “09:21 – Lot RM48-9817 placed on hold”. Reads the AuditLog. Inputs: <code>EntityType</code>, <code>RecordId</code>.</p>
+<h3>Attachments</h3>
+<p>Upload, download and preview evidence with a category and description. Drag and drop; JPG, PNG, PDF, XLSX, DOCX. Inputs: <code>EntityType</code>, <code>RecordId</code>, <code>IsReadOnly</code>.</p>
+<h3>ActionList</h3>
+<p>The common action-assignment interface: a record’s actions with owner, due date, priority and status, plus add, start, complete and verify. Used on every record and on My Work. Inputs: <code>EntityType</code>, <code>RecordId</code>.</p>
+<h3>ApprovalPanel</h3>
+<p>Approvers with their decision, date and comment, and Approve / Reject / Request Information for the current user. Comment required to reject. Used by MRB decisions, CAPA action plans, hold release and closures.</p>
+<h3>RelatedRecords</h3>
+<p>Cards for a record’s linked Quality Event, NCRs, MRBs, SCARs and CAPAs, each with its status. Clicking one opens it, so users move between related records without going home.</p>
+<h3>ImpactSummary</h3>
+<p>The affected quantities for a suspect lot: affected, on hold, consumed, shipped, customers exposed. Known defective kept separate from suspect. Used on the Quality Event Impact tab, Lot Trace and MRB.</p>
+</div>
+
+<h2 id="ai">AI assistant and agents</h2>
+<div class="card">
+<h3>AIAssistantPanel</h3>
+<p>The collapsible right-side panel on a record. Phase 1: <strong>Summarize</strong>, <strong>Find similar events</strong>, <strong>Suggested next steps</strong>. Every suggestion carries Accept and Dismiss; nothing applies until a person accepts it. Inputs: <code>EntityType</code>, <code>RecordId</code>.</p>
+<h3>Agent hooks <span class="soon">Coming soon</span></h3>
+<p>Later phases add agents that gather information, coordinate investigation work, watch overdue actions, prepare summaries and recommend next-best actions, with a person reviewing at defined control points. To leave room for them now:</p>
+<ul>
+<li>The assistant panel gets an <strong>Agent activity</strong> section, so what an agent did shows next to what it suggests.</li>
+<li>Agent work is written to the same ActivityTimeline and ApprovalPanel as people’s, marked as an agent, so the audit trail stays complete.</li>
+<li>Agents act only through the same workflow actions as users, never by changing a status directly.</li>
+</ul>
+</div>
+
+<h2 id="not">Not carried over</h2>
+<div class="card">
+<ul>
+<li><strong>CodeTableDropdown, IncentiveCodeDropdown, CodeTableText:</strong> built on the LifeView gateway’s code tables. Velocity Suite lookups are OutSystems static entities and reference data, so standard dropdowns do the job.</li>
+<li><strong>EffectiveDateFilter:</strong> specific to LifeView’s effective-dated payroll lists.</li>
+<li><strong>CodeDescriptionConcat:</strong> not needed while lookups have a Label. Worth bringing back if defect codes show as “DIA-HIGH - Diameter high”.</li>
+<li><strong>APIPagination:</strong> lists read from OutSystems aggregates use the standard OutSystems pagination. It could return once lists come from ERP or MES APIs through the integration layer.</li>
+</ul>
+</div>
+</main></body></html>

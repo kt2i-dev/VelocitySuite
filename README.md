@@ -34,6 +34,8 @@ branch → main / docs**). No build step and no workflow.
 | `docs/quality-engineering/quality-event-capa/` | Quality Event & Corrective Action Management: its page, About, and data model |
 | `docs/manufacturing/` | Redirects only: the site's first links, before the sectors were set up |
 | `docs/assets/site.css` | Shared styles for every page |
+| `docs/buttons.html`, `docs/widgets.html` | The Button standard and Custom widgets |
+| `tools/build_buttons.py` | Builds the Button standard page. Edit the button list there and rerun it |
 | `tools/build_data_model.py` | Builds the Quality Event & CAPA data model page. Edit the entity list there and rerun it, rather than editing `data-model.html` |
 
 ## Coming soon
