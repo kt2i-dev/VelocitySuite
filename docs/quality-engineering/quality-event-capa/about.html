@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About Quality Event &amp; CAPA</title>
+<link rel="stylesheet" href="../../assets/site.css"></head>
+<body><main><nav class="mock-home" aria-label="Mockup navigation"><a href="../../index.html"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Mockups home</a></nav>
+<p class="crumbs"><a href="../index.html">Quality / Engineering</a> › <a href="index.html">Quality Event &amp; Corrective Action Management</a> ›</p><h1>About Quality Event &amp; Corrective Action Management</h1>
+<p>A unified application for identifying, containing, investigating, resolving and preventing manufacturing quality problems: CAPA, SCAR, NCR and MRB with lot traceability. OutSystems module <code>VS_MFG_QualityAssurance</code>.</p>
+<p><strong>Detect problems sooner. Trace impact instantly. Correct root causes permanently.</strong></p>
+<div class="toc"><a href="#concept">The Quality Event</a><a href="#lifecycles">Lifecycles</a><a href="#lot-trace">Lot Trace</a><a href="#rules">Business rules</a><a href="#ai">AI assistant</a><a href="#roles">Roles</a><a href="#scenario">Demo scenario</a><a href="#scope">Prototype scope</a><a href="#terms">Terms</a><a href="#confirm">To confirm</a></div>
+
+<h2 id="concept">One Quality Event behind everything</h2>
+<div class="card">
+<p>NCR, MRB, CAPA and SCAR aren’t four separate applications. Every quality issue starts from, or is linked to, a <strong>Quality Event</strong>, and the other records hang off it. Anyone can open one issue and move between its NCR, hold, MRB, SCAR and CAPA without going back to the home screen.</p>
+<div class="flow"><b>Detect</b><i>→</i><b>Contain</b><i>→</i><b>Trace</b><i>→</i><b>Assess</b><i>→</i><b>Disposition</b><i>→</i><b>Correct</b><i>→</i><b>Collaborate</b><i>→</i><b>Verify</b><i>→</i><b>Learn</b></div>
+<p>Not every event needs every stage. Typical paths:</p>
+<ul>
+<li><strong>Minor defect:</strong> Quality Event → NCR → MRB → Disposition → Close</li>
+<li><strong>Supplier issue:</strong> Quality Event → NCR → Containment → SCAR → Supplier response → Verification → Close</li>
+<li><strong>Systemic problem:</strong> Quality Event → NCR → Containment → CAPA → Root cause → Corrective actions → Effectiveness check → Close</li>
+<li><strong>Major supplier or systemic problem:</strong> Quality Event → NCR → Lot trace → MRB + SCAR + CAPA → Effectiveness check → Close</li>
+</ul>
+<h3>Where events come from</h3>
+<p>Incoming inspection, receiving, production, in-process and final inspection, laboratory/test, customer complaints, suppliers, audits, equipment, process monitoring (SPC), warehouse, returns/RMA, engineering, or a user-defined source. Sources are configurable reference data.</p>
+<h3>Design principles for every screen</h3>
+<ul>
+<li><strong>Status changes through business actions</strong> (Submit Event, Place on Hold, Request MRB, Issue SCAR). Users never pick or type a status.</li>
+<li><strong>Context before forms:</strong> every record has a persistent header with its number, status, severity, part, lot, supplier and owner.</li>
+<li><strong>Progressive disclosure:</strong> operators see simple screens; engineers and managers see more as role, status and risk call for it. Creating a Quality Event doesn’t show CAPA, MRB or SCAR fields.</li>
+<li><strong>Audit by design:</strong> every transition writes an activity entry.</li>
+<li><strong>Plain error messages:</strong> “This NCR cannot be closed because MRB-2026-00081 is still awaiting approval,” never “Operation prohibited.”</li>
+</ul>
+</div>
+
+<h2 id="lifecycles">Modules and their lifecycles</h2>
+<div class="card">
+<h3>Quality Event</h3>
+<p>Records the issue when it’s found: where, what product, material and lot, quantities, risk and immediate actions. A basic event should take a Quality Inspector about a minute.</p>
+<div class="flow"><b>Draft</b><i>→</i><b>Submitted</b><i>→</i><b>Under Review</b><i>→</i><b>Contained</b><i>→</i><b>Investigation</b><i>→</i><b>Action Required</b><i>→</i><b>Verification</b><i>→</i><b>Closed</b></div>
+<p class="muted">Also: Reopened, and possibly Awaiting MRB, Awaiting Supplier, Awaiting CAPA, On Hold and Cancelled. Submitted → Under Review when a Quality Engineer is assigned; → Contained when an immediate hold is placed.</p>
+
+<h3>NCR: Nonconformance Report</h3>
+<p>Formally documents material, product or process conditions that don’t meet requirements. Created directly or from a Quality Event.</p>
+<div class="flow"><b>Draft</b><i>→</i><b>Open</b><i>→</i><b>Containment</b><i>→</i><b>Awaiting MRB</b><i>→</i><b>Disposition Approved</b><i>→</i><b>Closed</b></div>
+<p class="muted">Containment goes to Awaiting MRB when MRB is required, or straight to Verification → Closed when it isn’t.</p>
+<ul>
+<li><strong>Risk classification:</strong> Low (limited quantity, no customer exposure, isolated cause), Medium (larger quantity, possible repeat, production impact, supplier involved), High (customer exposure, safety or regulatory concern, repeat problem, multiple lots, major disruption), Critical (safety-critical, reportable, significant customer exposure, recall potential). Thresholds are configurable.</li>
+<li><strong>Containment</strong> is tracked separately from corrective action: stop production, quarantine, hold, block shipment, 100% inspection, segregate, notify customer or supplier, inspect adjacent lots, WIP, finished goods or warehouse stock. Each action has an owner, due date, status, evidence and inspected / accepted / rejected quantities.</li>
+<li><strong>Can’t close</strong> while required containment is open, a required MRB is incomplete, the disposition isn’t recorded, or a required CAPA or SCAR hasn’t been started.</li>
+</ul>
+
+<h3>Quality Hold</h3>
+<div class="flow"><b>Pending</b><i>→</i><b>Active</b><i>→</i><b>Partially Released</b><i>→</i><b>Released</b></div>
+<p>Held material shows a visible HOLD indicator everywhere it appears. In production the hold should also block issue and shipment in the ERP or WMS. A lot that has already shipped can’t be put on hold: the screen says a customer-impact assessment is needed instead.</p>
+
+<h3>MRB: Material Review Board</h3>
+<p>Controlled review and disposition of nonconforming material. Required by risk, quantity, material value, customer exposure, an engineering decision, a user’s choice or a configurable rule.</p>
+<div class="flow"><b>Draft</b><i>→</i><b>Under Review</b><i>→</i><b>Approved</b><i>→</i><b>Completed</b></div>
+<p class="muted">Also: Additional Information Requested, Rejected.</p>
+<ul>
+<li><strong>Dispositions:</strong> Use As Is, Rework, Repair, Sort / 100% Inspect, Scrap, Return to Vendor, Deviation / Concession, Reclassify.</li>
+<li><strong>Members</strong> Approve, Reject, Request Information or Recommend Alternative. A comment is required for anything but Approve. No one can approve twice.</li>
+<li>Use As Is and Deviation need a justification, Rework needs instructions, Scrap needs a quantity.</li>
+<li>Can’t complete until every required approver has responded. Approval routing will be configurable by risk, value, product, customer, plant, disposition and quantity.</li>
+</ul>
+
+<h3>CAPA: Corrective and Preventive Action</h3>
+<p>Finds and fixes the root cause of a recurring or systemic problem, then checks the fix worked. Started from an NCR, Quality Event, complaint, audit, SCAR, trend or management review. One CAPA can cover several Quality Events.</p>
+<div class="flow"><b>Draft</b><i>→</i><b>Investigation</b><i>→</i><b>Root Cause Identified</b><i>→</i><b>Action Plan</b><i>→</i><b>Implementation</b><i>→</i><b>Effectiveness Review</b><i>→</i><b>Closed</b></div>
+<ul>
+<li><strong>Recommended, not automatic:</strong> the app shows “CAPA Recommended” for a critical NCR, a repeat defect, multiple affected lots, a customer receiving bad product, significant business impact, or a previous fix that didn’t work. A Quality Engineer or Manager decides.</li>
+<li><strong>Root cause:</strong> 5 Whys (any number of whys, not exactly five) and a category: People, Machine, Method, Material, Measurement, Environment, Supplier, Design, Documentation, Training, System. Fishbone comes later, as a structured form first.</li>
+<li>Before Action Plan: investigation summary, confirmed root cause and escape point.</li>
+<li>Before Effectiveness Review: every corrective action Verified.</li>
+<li>Before closing: Effectiveness result is Effective (an authorized manager can document an exception). If Not Effective, the CAPA is Reopened and goes back to Investigation, keeping its history.</li>
+</ul>
+
+<h3>SCAR: Supplier Corrective Action Request</h3>
+<p>Asks a supplier to find and fix the cause of a problem with their material. Started from an NCR, incoming inspection, a supplier lot issue, a complaint traced to a supplier, a supplier audit or repeat poor performance.</p>
+<div class="flow"><b>Draft</b><i>→</i><b>Issued</b><i>→</i><b>Supplier Acknowledged</b><i>→</i><b>Supplier Response</b><i>→</i><b>Manufacturer Review</b><i>→</i><b>Implementation</b><i>→</i><b>Verification</b><i>→</i><b>Closed</b></div>
+<ul>
+<li>The supplier answers in <strong>8D</strong> sections: D1 Team, D2 Problem, D3 Interim containment, D4 Root cause and escape point, D5 Corrective action, D6 Implementation, D7 Prevention, D8 Closure. Using all eight is configurable.</li>
+<li>The manufacturer can Accept, Reject or Request Clarification on each section; rejecting needs a comment and returns it to the supplier.</li>
+<li>Can’t issue without a supplier, problem statement, material and response due date. Can’t close until required sections are accepted, corrective actions are implemented and the manufacturer has verified.</li>
+<li>Suppliers respond through a separate <strong>Supplier Portal</strong> that only shows their own company’s SCARs.</li>
+</ul>
+
+<h3>Actions</h3>
+<div class="flow"><b>Not Started</b><i>→</i><b>In Progress</b><i>→</i><b>Completed</b><i>→</i><b>Verified</b></div>
+<p>One Action type is used everywhere (NCR, MRB, CAPA, SCAR, containment, audit, effectiveness). Marking an action complete doesn’t close it if Quality needs to verify it. Completing one needs notes, and evidence when required.</p>
+</div>
+
+<h2 id="lot-trace">Lot Trace</h2>
+<div class="card">
+<p>The visual centerpiece of the app and its biggest differentiator. From any lot, serial number, work order or material:</p>
+<ul>
+<li><strong>Forward trace</strong> answers “where did this defective material go?”: supplier lot → receipt → internal lot → work orders → WIP lots → finished-goods lots → shipments → customers.</li>
+<li><strong>Backward trace</strong> goes from a finished lot to its work order, operations, component and raw-material lots, supplier lots, purchase orders and supplier.</li>
+<li><strong>Where used</strong> lists every production order, child lot, finished good, shipment and customer for a lot.</li>
+<li><strong>Quality overlay:</strong> the genealogy graph marks nodes with an open quality event, HOLD, SHIPPED or CUSTOMER exposure, and every node opens its details in a side panel.</li>
+<li><strong>Impact:</strong> for a suspect lot, original, available, in-production, WIP, finished-goods, shipped, scrapped, consumed, held and reworked quantities, always separating known defective from potentially affected.</li>
+<li>Genealogy is many-to-many and recursive (splits, merges, rework, repackaging, subassemblies, multi-level BOMs). Circular relationships are rejected.</li>
+</ul>
+</div>
+
+<h2 id="rules">Business rules</h2>
+<div class="card">
+<ul>
+<li><strong>BR-001</strong> Every submitted Quality Event gets a unique system-generated number.</li>
+<li><strong>BR-002</strong> A Quality Event can’t be submitted without a problem description.</li>
+<li><strong>BR-003</strong> Product-related events require the product or material where available.</li>
+<li><strong>BR-004</strong> Events on lot-controlled material require a lot number.</li>
+<li><strong>BR-005</strong> Critical events notify the Quality Manager.</li>
+<li><strong>BR-006</strong> Material on an active hold shows a visible HOLD indicator.</li>
+<li><strong>BR-007</strong> An MRB disposition can’t complete until required approvals are in.</li>
+<li><strong>BR-008</strong> A CAPA can’t close with open corrective actions.</li>
+<li><strong>BR-009</strong> A CAPA can’t close without an effectiveness check, unless an authorized manager documents an exception.</li>
+<li><strong>BR-010</strong> A SCAR can’t close until the manufacturer’s quality representative accepts the supplier response.</li>
+<li><strong>BR-011</strong> Closed records are read-only except for authorized reopen.</li>
+<li><strong>BR-012</strong> Reopening requires a reason.</li>
+<li><strong>BR-013</strong> Every approval records user, time, decision and comments.</li>
+<li><strong>BR-014</strong> Overdue actions are visibly flagged.</li>
+<li><strong>BR-015</strong> Lot genealogy can’t be circular.</li>
+</ul>
+<p class="muted">Submitted quality records are never hard-deleted. A Draft Quality Event can be deleted by its creator or an Administrator.</p>
+</div>
+
+<h2 id="ai">AI Quality Assistant</h2>
+<div class="card">
+<p>A collapsible panel on the right of a record. It suggests; people decide. Every suggestion needs a person to accept it.</p>
+<ul>
+<li><strong>Summarize:</strong> turns a complex event into a short management summary.</li>
+<li><strong>Find similar events:</strong> past events with the same part, defect, supplier, machine, line, failure mode or root cause.</li>
+<li><strong>Suggested next steps</strong>, including recommending a CAPA or SCAR.</li>
+<li><strong>Classify:</strong> suggests event type, defect category, severity and first actions from the description.</li>
+<li><strong>Potential investigation areas</strong> drawn from previous root causes and corrective actions, never a stated root cause.</li>
+<li><strong>Draft supplier communication</strong> for a SCAR, reviewed before it’s sent.</li>
+<li>Later: trend detection and natural-language search (“which finished goods contain supplier lot S-84372?”).</li>
+</ul>
+</div>
+
+<h2 id="roles">Roles</h2>
+<div class="card">
+<ul>
+<li><strong>Production Operator:</strong> creates Quality Events, identifies affected material and lots, adds photos, records immediate containment, completes assigned actions. Sees events for their own production area and a simplified dashboard. Doesn’t normally approve closure.</li>
+<li><strong>Quality Inspector:</strong> creates and edits Quality Events and NCRs, records findings, defect codes and quantities, places holds, traces lots, recommends MRB dispositions.</li>
+<li><strong>Quality Engineer:</strong> runs NCR investigations and lot-impact analysis, starts CAPAs and SCARs, does root-cause analysis, defines corrective actions, requests MRB review, performs effectiveness checks, recommends closure.</li>
+<li><strong>Supplier Quality Engineer:</strong> creates and manages SCARs, works with suppliers, accepts or rejects supplier plans, tracks supplier quality.</li>
+<li><strong>MRB Member:</strong> from quality, engineering, manufacturing, supply chain, procurement or operations. Reviews nonconforming material and votes on dispositions.</li>
+<li><strong>Quality Manager:</strong> approves CAPAs, major NCR closures and MRB decisions (within thresholds), reviews overdue events, reopens closed records, sees organization-wide metrics.</li>
+<li><strong>Supplier User:</strong> through the Supplier Portal only. Acknowledges, submits containment, root cause, corrective actions and evidence for their own company’s SCARs.</li>
+<li><strong>Administrator:</strong> configures plants, departments, products, materials, defect codes, event types and sources, risk levels, dispositions, CAPA and root-cause categories, workflow, approval, notification and escalation rules, and users.</li>
+</ul>
+</div>
+
+<h2 id="scenario">Demo scenario</h2>
+<div class="card">
+<p>Every mockup uses this one fictional storyline so the screens tell a single story.</p>
+<ul>
+<li><strong>The defect:</strong> ABC Precision Components supplies RM-1042, a precision stainless steel shaft (10.00 mm ± 0.20 mm). Incoming inspection measures 10.48 mm. 25 units fail; all 200 in supplier lot SUP-84721 are suspect.</li>
+<li><strong>The material:</strong> received on RCPT-39471 against PO-448712 as internal lot RM48-9817. 80 units were already consumed by WO-875443 into FG-50021 (40 units, shipped on SH-48127 to Apex Industrial Systems) and FG-50022 (40 units, in warehouse FG-WH-A12). 120 remain.</li>
+<li><strong>The records:</strong> QE-2026-00187 → NCR-2026-00143 → HOLD-2026-00057 on RM48-9817 → FG-50022 held, customer-impact action on FG-50021 → MRB-2026-00081 (100% sort / inspect) → SCAR-2026-00024 → the assistant flags a likely repeat → CAPA-2026-00031.</li>
+<li><strong>Root cause:</strong> the supplier tracked tool life by hand, so cutting-tool wear went unnoticed; their final-inspection sampling missed the drift (escape point). Effectiveness check: no dimensional NCRs on RM-1042 for three supplier lots over 60 days.</li>
+<li><strong>Demo users:</strong> Sarah Mitchell (Quality Inspector), Maria Lopez (Quality Engineer), Kevin Jones, David Kim (Engineering), Robert Chen (Operations), Mark Stevens (supplier contact).</li>
+</ul>
+</div>
+
+<h2 id="scope">Prototype scope</h2>
+<div class="card">
+<p>Three experiences carry the demo: <strong>“Something went wrong”</strong> (create an event in under a minute), <strong>“What else is affected?”</strong> (Trace Lot shows where it came from, where it went and who received it) and <strong>“How do we make sure it doesn’t happen again?”</strong> (NCR → MRB → SCAR → CAPA → actions → effectiveness, with similar past events).</p>
+<ul>
+<li><strong>P0, essential:</strong> sign-in, dashboard, Quality Events, NCR, lot trace, quality holds, MRB, CAPA, SCAR, actions, activity timeline.</li>
+<li><strong>P1, high value:</strong> email notifications, Supplier Portal, related events, AI summary and similarity, analytics, PDF summary, configurable approval thresholds.</li>
+<li><strong>P2, production:</strong> advanced workflow configuration, ERP/MES integration, electronic signatures, supplier scorecards, mobile inspection, SPC, cost of quality, FMEA and control-plan links.</li>
+</ul>
+<p>Most design effort goes to four screens: the <strong>dashboard</strong>, the <strong>Quality Event workspace</strong>, <strong>Lot Trace</strong> and the <strong>CAPA workspace</strong>. The rest use the standard Velocity Suite components. Desktop first, tablet second; creating an event, photographing a defect, completing an action and looking up a lot should work on a phone.</p>
+</div>
+
+<h2 id="terms">Terms</h2>
+<div class="card">
+<ul>
+<li><strong>8D:</strong> the eight-discipline problem-solving format suppliers use to answer a SCAR.</li>
+<li><strong>Containment:</strong> immediate steps that stop bad material moving further while the cause is found.</li>
+<li><strong>Disposition:</strong> what happens to nonconforming material (use as is, rework, repair, sort, scrap, return, deviation, reclassify).</li>
+<li><strong>Escape point:</strong> where the defect should have been caught but wasn’t.</li>
+<li><strong>Known defective vs. suspect:</strong> units confirmed bad, versus units that may be affected and need checking.</li>
+<li><strong>Lot / supplier lot:</strong> a traceable batch. A supplier lot is the supplier’s own number for what they shipped.</li>
+<li><strong>Customer:</strong> who receives finished goods from a shipment.</li>
+</ul>
+</div>
+
+<h2 id="confirm">To confirm</h2>
+<div class="card">
+<p class="muted">The source documents disagree on these. This page follows the UI/UX build specification.</p>
+<ul>
+<li><strong>CAPA:</strong> the functional spec adds Containment and a separate Quality Approval step (Initiated → Containment → Investigation → Root Cause → Corrective Action Plan → Implementation → Effectiveness Verification → Quality Approval → Closed).</li>
+<li><strong>SCAR:</strong> the functional spec splits Supplier Response into Containment Submitted, Root Cause Submitted and Corrective Action Submitted, and the overview deck leaves out Implementation.</li>
+<li><strong>MRB:</strong> the overview deck shows Draft → Under Review → Disposition → Approval → Completed.</li>
+<li><strong>Quality Event detail tabs:</strong> the functional spec lists Overview, Material / Product, Lot Trace, Containment, NCR / MRB, Corrective Action, Attachments, Activity; the UI/UX spec lists Overview, Impact, Containment, Related Records, Actions, Attachments, Activity.</li>
+<li><strong>Navigation:</strong> the functional spec has Suppliers in the main menu; the UI/UX spec has My Actions instead. The built app uses a side menu, while the specs and most mockups use a top bar.</li>
+</ul>
+</div>
+</main></body></html>

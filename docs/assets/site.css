@@ -52,6 +52,18 @@ table.dm td.grp{font-size:12px;font-weight:600;color:#5b6575;text-transform:uppe
 .toc{display:flex;flex-wrap:wrap;gap:6px;font-size:13px;margin:0 0 12px}
 .toc a{background:#fff;border:1px solid #dde2e9;border-radius:999px;padding:3px 10px;color:#0a5bd3;text-decoration:none}
 
+/* Solution map: one card per area, a compact row per solution */
+.areas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 8px}
+@media (max-width:600px){.areas{grid-template-columns:minmax(0,1fr)}}
+.area-card{background:#fff;border:1px solid #dde2e9;border-radius:10px;padding:12px 16px;margin-bottom:8px}
+.area-card h3{margin:0 0 6px;font-size:13px;color:#2b3340}
+.area-card ul{list-style:none;margin:0;padding:0;font-size:13.5px}
+.area-card li{padding:5px 0;border-top:1px solid #eef1f5;color:#8a93a1}
+.area-card li:first-child{border-top:0}
+.area-card li a{color:#0a5bd3;font-weight:500;text-decoration:none}
+.area-card .soon{font-size:10px;margin-left:6px}
+.wip{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:999px;background:#e3edfb;color:#0a3f8f;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;vertical-align:1px}
+
 /* "Mockups home" link at the top right of every page except the start page */
 .mock-home{display:flex;justify-content:flex-end;margin:0 0 16px}
 .mock-home a{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border:1px dashed #9aa4b2;border-radius:8px;background:#fffbe8;color:#2b3340;font-size:14px;font-weight:600;text-decoration:none}

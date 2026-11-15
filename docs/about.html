@@ -3,24 +3,62 @@
 <title>About Velocity Suite</title>
 <link rel="stylesheet" href="assets/site.css"></head>
 <body><main><nav class="mock-home" aria-label="Mockup navigation"><a href="index.html"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Mockups home</a></nav><h1>About Velocity Suite</h1>
-<p>Reusable starting points, built on OutSystems by KT2i and tailored to each customer.</p>
+<p>KT2i’s Velocity Suite for Manufacturing: reusable starting points built on OutSystems, tailored to the customer.</p>
 
 <div class="card">
 <h3>What it is</h3>
-<p>Velocity Suite is a set of ready-made applications, each one aimed at a workflow that falls between a customer’s core systems: the work an ERP or MES leaves people coordinating by email and spreadsheets. Each application is a working starting point rather than a blank build, so a customer sees their process running early and the project shapes it from there.</p>
-<h3>How each application is delivered</h3>
+<p>The Velocity Manufacturing Suite is built around a simple idea: manufacturers should be able to modernize critical operational processes quickly, without being held back by legacy technology or long development cycles. Its applications complement a manufacturer’s existing ERP, MES, QMS, PLM, laboratory, supplier and shop-floor systems rather than replacing them.</p>
+<p>The entry point is often a workflow stranded between core systems: where an ERP or MES leaves people coordinating work by email.</p>
+<h3>The approach</h3>
 <ul>
-<li><strong>Integrate</strong> with the customer’s ERP, MES and existing data sources.</li>
-<li><strong>Adapt</strong> the screens, rules and approvals to the customer’s site and process.</li>
-<li><strong>Expand</strong> workflow by workflow as each one proves its value.</li>
+<li><strong>Integrate</strong> with ERP, MES and existing data sources.</li>
+<li><strong>Adapt</strong> screens, rules and approvals to the plant.</li>
+<li><strong>Expand</strong> by workflow as customer demand is proven.</li>
 </ul>
-<h3>How it’s organized</h3>
-<p>The suite is grouped by <strong>sector</strong> (an industry, such as Manufacturing). Each sector has its own <strong>applications</strong>, and every application is built to the same standards: one button standard, one set of custom widgets, and one detail-screen template. That keeps screens consistent from application to application, so a developer who has built one can build the next.</p>
+<p>The first starting points are a <strong>Supplier Portal</strong>, <strong>Spare Parts</strong> and <strong>Quality workflows</strong>.</p>
 </div>
 
-<h2>Sectors</h2>
-<div class="row c2">
-<a class="tile area" href="manufacturing/index.html">Manufacturing<span>Quality Assurance first; Supplier Portal and Spare Parts to follow</span></a>
-<div class="tile area disabled" aria-disabled="true">More sectors<span class="soon">Coming soon</span><span>Sector list to be confirmed</span></div>
+<h2>What makes it different</h2>
+<div class="card">
+<h3>1. Built on an application platform, not a fixed product</h3>
+<p>Workflows, business rules, forms, integrations, dashboards and AI capabilities can evolve with the business: new event types, changed approval routing, new plants, suppliers and data sources, new KPIs, without waiting for a vendor’s release.</p>
+<h3>2. Designed for manufacturing complexity</h3>
+<p>Records connect to the context around them (product, lot, supplier, work order, line, machine, shift, process parameters, maintenance history), so an issue is understood in full instead of as an isolated record.</p>
+<h3>3. Continuous improvement, not a one-time implementation</h3>
+<p>Administrators adjust workflows, classifications, rules and dashboards through configuration. When something goes beyond configuration, KT2i adds targeted OutSystems extensions without destabilizing the core.</p>
+<h3>AI built in from the ground up</h3>
+<p>AI augments people; it doesn’t replace their judgment. People remain responsible for decisions, approvals and dispositions. AI capabilities can be introduced in phases:</p>
+<div class="flow"><b>1 · AI assistance</b><i>→</i><b>2 · Investigation intelligence</b><i>→</i><b>3 · Predictive quality</b><i>→</i><b>4 · Agentic operations</b></div>
+<p>The maturity path it supports:</p>
+<div class="flow"><b>Reactive</b><i>→</i><b>Controlled</b><i>→</i><b>Connected</b><i>→</i><b>Intelligent</b><i>→</i><b>Predictive</b></div>
+</div>
+
+<h2>The five sectors</h2>
+<div class="card">
+<ul>
+<li><a class="inl" href="quality-engineering/index.html">Quality / Engineering</a>: NCR, CAPA, SCAR and MRB workflows with traceability; FMEA, PPAP, inspection, continuous improvement.</li>
+<li><a class="inl" href="supply-chain-logistics/index.html">Supply Chain / Logistics</a>: supplier coordination, parts availability, exception handling.</li>
+<li><a class="inl" href="production-maintenance/index.html">Production / Maintenance</a>: shift handoff, maintenance and assets, factory performance, scheduling, the connected worker.</li>
+<li><a class="inl" href="safety-environment/index.html">Safety / Environment</a>: lockout/tagout, permits, OSHA compliance, incidents, ESG.</li>
+<li><a class="inl" href="workforce-training/index.html">Workforce / Training</a>: skills, scheduling, training, time cards.</li>
+</ul>
+</div>
+
+<h2>How the sectors connect</h2>
+<div class="card">
+<p>Quality Event &amp; Corrective Action Management is intended to become the quality orchestration layer of the suite, so one event reaches whichever application has to act on it:</p>
+<ul>
+<li><strong>Supplier management:</strong> supplier issue → SCAR → supplier scorecard</li>
+<li><strong>Incoming inspection:</strong> inspection failure → Quality Event → NCR</li>
+<li><strong>Manufacturing operations:</strong> production deviation → Quality Event</li>
+<li><strong>Maintenance:</strong> equipment root cause → maintenance work order</li>
+<li><strong>Inventory / warehouse:</strong> NCR → material hold</li>
+<li><strong>Customer service:</strong> customer complaint → Quality Event → CAPA</li>
+<li><strong>Engineering change:</strong> CAPA → engineering change request</li>
+<li><strong>Document management:</strong> CAPA → SOP / work-instruction revision</li>
+<li><strong>Training management:</strong> CAPA → retraining requirement</li>
+</ul>
+<h3>Systems it integrates with</h3>
+<p>ERP (materials, suppliers, purchase orders, receipts, work orders, inventory, customers, shipments), MES (production orders, operations, equipment, lot production and consumption, measurements), WMS (inventory, locations, lots, holds, movements), PLM (products, revisions, BOMs, specifications, engineering changes), LIMS, CMMS / EAM, supplier management, CRM and customer service, data platforms and IoT, identity (Microsoft Entra ID, Active Directory, Okta) and collaboration (Teams, Outlook, Slack). Velocity Suite owns the process; it doesn’t become the system of record for data those systems already hold.</p>
 </div>
 </main></body></html>
