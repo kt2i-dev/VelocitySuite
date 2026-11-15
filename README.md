@@ -23,8 +23,11 @@ branch → main / docs**). No build step and no workflow.
 |---|---|
 | `docs/index.html` | Start page: the standards (Button standard, Details/Edit Screen Template, Custom widgets), a tile per sector, then the review checklist and recent updates |
 | `docs/updates.html` | **Recent updates**, newest first. Add a dated entry with each change and update the "last updated" date on the start page's tile |
-| `docs/<sector>/index.html` | A sector's page: a tile per application |
-| `docs/<sector>/<app>/…` | An application's screens (none yet) |
+| `docs/about.html` | About Velocity Suite (not written yet; the start page's first tile) |
+| `docs/<sector>/index.html` | A sector's page: its About tile, then a tile per application |
+| `docs/<sector>/about.html` | About the sector (not written yet) |
+| `docs/<sector>/<app>/index.html` | An application's page: its About tile, then its screens (none yet) |
+| `docs/<sector>/<app>/about.html` | About the application (not written yet) |
 | `docs/assets/site.css` | Shared styles for every page |
 
 ## Coming soon
