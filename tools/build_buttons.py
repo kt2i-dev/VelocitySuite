@@ -45,15 +45,22 @@ def svg(name):
             f'stroke-linecap="round" stroke-linejoin="round"><path d="{d}"/></svg>')
 
 
-def btn(label, icon, style="", small=False, disabled=False):
-    cls = "btn" + (f" {style}" if style else "") + (" btn-sm" if small else "") + (" btn-icon" if not label else "")
+def classes(style):
+    """The class list a button gets in the app: app-btn plus one variant, or an icon link."""
+    return style if style == L else f"app-btn {style}"
+
+
+def btn(label, icon, style="", disabled=False):
+    style = style or B
     dis = " disabled" if disabled else ""
-    aria = f' aria-label="{ICONS[icon][1]}"' if not label else ""
-    return f'<span class="{cls}"{dis}{aria}>{svg(icon)}{label}</span>'
+    if style == L:  # icon-only link (list rows, More)
+        name = label or "More"
+        return f'<span class="app-icon-link" title="{name}" aria-label="{name}">{svg(icon)}</span>'
+    return f'<span class="{classes(style)}"{dis}>{svg(icon)}{label}</span>'
 
 
 # (group, [(label, icon, style, block_or_form, where)])
-B, P, D = "", "btn-primary", "btn-delete"
+B, P, D, L = "app-btn-outline", "app-btn-primary", "app-btn-danger", "app-icon-link"
 BUTTONS = [
     ("Record actions", [
         ("New Quality Event", "plus", P, "ButtonNew block (Label input)", "Top right of a list and the dashboard. Hidden for roles that can’t create. “New NCR”, “New CAPA” and so on on their lists."),
@@ -87,8 +94,8 @@ BUTTONS = [
         ("Clear", "x", B, "ButtonClear block", "Right of Apply. Clears the filters and reloads the list."),
         ("Save View", "save", B, "ButtonSaveView block", "Under Apply / Clear. Saves the filters as a named view."),
         ("Export", "download", B, "ButtonExport block", "List header, right of New."),
-        ("Open", "eye", B, "ButtonOpen block (small)", "Row Actions column, first. Opens the record’s workspace. The record number is also a link."),
-        ("", "more", B, "ButtonMore block (small)", "Row Actions column, last; record header, last. Opens a menu of the row’s or record’s other actions."),
+        ("Open", "eye", L, "ButtonOpen block", "Row Actions column, first, as an icon link with an “Open” tooltip. Opens the record’s workspace. The record number is also a link (<code>app-link</code>)."),
+        ("", "more", L, "ButtonMore block", "Row Actions column, last; record header, last. Opens a menu of the row’s or record’s other actions."),
     ]),
     ("Evidence and communication", [
         ("Add Photo", "camera", B, "ButtonAddPhoto block", "Create Quality Event and actions. Opens the camera on a phone or tablet."),
@@ -111,8 +118,8 @@ def build():
     for group, items in BUTTONS:
         rows.append(f'<tr><td class="grp" colspan="4">{group}</td></tr>')
         for label, icon, style, built, where in items:
-            sample = btn(label, icon, style, small=(not label or "small" in built))
-            rows.append(f"<tr><td>{sample}</td><td><code>{style or 'btn'}</code></td><td><code>{ICONS[icon][1]}</code></td>"
+            sample = btn(label, icon, style)
+            rows.append(f"<tr><td>{sample}</td><td><code>{classes(style)}</code></td><td><code>{ICONS[icon][1]}</code></td>"
                         f"<td>{where}<br><span class=\"muted\">{built}</span></td></tr>")
     out = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -124,15 +131,14 @@ def build():
 <h2>Three styles</h2>
 <div class="card">
 <div class="btn-row">{btn("Submit", "send", P)}{btn("Edit", "pencil")}{btn("Delete", "trash", D)}{btn("Trace Lot", "trace", disabled=True)}</div>
+<p>Every button is <code>app-btn</code> plus one variant, from the shared stylesheet (see the <a class="inl" href="theme.html">Theme</a>). Nothing else goes in the button’s Style property.</p>
 <ul>
-<li><code>btn</code>: outlined, the default for every action.</li>
-<li><code>btn-primary</code>: filled. <strong>One per screen or section</strong>: the step that moves the record forward (Submit, Save, Issue SCAR, Approve, Apply). <span class="ours">Our standard</span></li>
-<li><code>btn-delete</code>: red outline, for Delete only. A custom class we add to the theme. Cancel and Reject stay <code>btn</code>: red means data is about to be lost. <span class="ours">Our standard</span></li>
+<li><code>app-btn app-btn-outline</code>: outlined, the default for every action.</li>
+<li><code>app-btn app-btn-primary</code>: filled. <strong>One per screen or section</strong>: the step that moves the record forward (Submit, Save, Issue SCAR, Approve, Apply). <span class="ours">Our standard</span></li>
+<li><code>app-btn app-btn-danger</code>: red (<code>--app-danger</code>), for Delete only. Cancel and Reject stay outlined: red means data is about to be lost. <span class="ours">Our standard</span></li>
+<li><strong>Row actions</strong> are icon links, not buttons: <code>app-icon-link</code> (Open, More), and <code>app-icon-link-danger</code> for a row’s Delete.</li>
 <li>A button that can’t be used yet stays visible but disabled, with the reason as its tooltip (“Available after submission”, “MRB-2026-00081 is still awaiting approval”). A button the user’s role can never use is hidden.</li>
 </ul>
-<p class="muted">Theme CSS for the new class, using OutSystems UI’s own error color:</p>
-<pre class="card" style="margin:0;font-size:12.5px;overflow:auto">.btn.btn-delete {{ border-color: var(--color-error); color: var(--color-error); }}
-.btn.btn-delete:hover {{ background-color: var(--color-error); color: var(--color-neutral-0); }}</pre>
 </div>
 
 <h2>Every button</h2>
@@ -146,8 +152,8 @@ def build():
 <h2>The button blocks</h2>
 <div class="card">
 <ul>
-<li><strong>One block per common button</strong> (ButtonEdit, ButtonCancel, ButtonDelete, ButtonAssign, ButtonApprove…), each with the icon, label and class built in, so the same action looks the same everywhere.</li>
-<li><strong>Inputs:</strong> <code>IsEnabled</code> (Boolean, mandatory) and <code>ExtendedClass</code> (Text, optional). ButtonNew and ButtonAddAction also take <code>Label</code>.</li>
+<li><strong>One block per common button</strong> (ButtonEdit, ButtonCancel, ButtonDelete, ButtonAssign, ButtonApprove…), each with the icon, label and <code>app-btn</code> classes built in, so the same action looks the same everywhere.</li>
+<li><strong>Inputs:</strong> <code>IsEnabled</code> (Boolean, mandatory) and <code>ExtendedClass</code> (Text, optional: shared <code>app-*</code> classes only). ButtonNew and ButtonAddAction also take <code>Label</code>.</li>
 <li><strong>Event:</strong> <code>Clicked</code>, no parameters. What happens goes in the parent’s handler.</li>
 <li><strong>Not blocks:</strong> Save, Save Draft and Submit stay plain buttons inside the form, because they have to run the form’s validation. They use OutSystems UI’s Button Loading (“Saving…”) and are disabled until the call finishes.</li>
 <li><strong>Workflow buttons</strong> (Create NCR, Request MRB, Close Event…) are plain buttons with the icon and class above. Each calls one server action that checks the rule and moves the status, so status only changes through these actions.</li>
@@ -158,8 +164,8 @@ def build():
 <h2>Placement</h2>
 <div class="card">
 <table class="dm"><thead><tr><th>Where</th><th>What goes there</th></tr></thead><tbody>
-<tr><td>Record header, View</td><td>
-<div class="btn-row">{btn("Create NCR", "file", P)}{btn("Edit", "pencil")}{btn("Trace Lot", "trace")}{btn("Add Action", "plus")}{btn("", "more", small=False)}</div>
+<tr><td>Record header, View<br><span class="muted"><code>app-actions</code></span></td><td>
+<div class="btn-row">{btn("Create NCR", "file", P)}{btn("Edit", "pencil")}{btn("Trace Lot", "trace")}{btn("Add Action", "plus")}{btn("", "more", L)}</div>
 The <strong>next workflow step</strong> for this record’s status and the user’s role as the one primary button, then up to three everyday actions, then More (⋯) for the rest (Assign, Request MRB, Create CAPA / SCAR, Reopen, Print, Export, Copy Link). Only actions valid for the current status show. <span class="ours">Our standard</span></td></tr>
 <tr><td>Record header, Edit</td><td>
 <div class="btn-row">{btn("Delete", "trash", D)}<span class="sep"></span>{btn("Cancel", "x")}{btn("Save", "save", P)}</div>
@@ -171,12 +177,12 @@ At the bottom of the form, Submit rightmost. The follow-up actions (Create NCR, 
 <div class="btn-row">{btn("Export", "download")}{btn("New Quality Event", "plus", P)}</div>
 Title left; Export and New right, New rightmost.</td></tr>
 <tr><td>List rows</td><td>
-<div class="btn-row">{btn("Open", "eye", small=True)}{btn("", "more", small=True)}</div>
-Actions is the last column: Open, then More for the row’s other actions.</td></tr>
+<div class="btn-row">{btn("Open", "eye", L)}{btn("", "more", L)}</div>
+Actions is the last column: Open, then More for the row’s other actions, both <code>app-icon-link</code>.</td></tr>
 <tr><td>Filter panel</td><td>
 <div class="btn-row">{btn("Clear", "x")}{btn("Apply", "search", P)}{btn("Save View", "save")}</div>
 At the bottom of the panel. Filters don’t run until Apply.</td></tr>
-<tr><td>Back</td><td>A text link with {svg("back").replace("<svg", '<svg width="14" height="14" style="vertical-align:-2px"')} Back above the record header, returning to the list or record the user came from. Not a button.</td></tr>
+<tr><td>Back</td><td>An <code>app-back</code> text link with {svg("back").replace("<svg", '<svg width="14" height="14" style="vertical-align:-2px"')} Back above the page header, returning to the list or record the user came from. Not a button.</td></tr>
 </tbody></table>
 </div>
 
@@ -184,7 +190,7 @@ At the bottom of the panel. Filters don’t run until Apply.</td></tr>
 <div class="card">
 <ul>
 <li><strong>Fewer header buttons.</strong> The mockups put seven to ten outlined buttons in a row on every workspace, sometimes with two primaries (Save and Submit for Closure). Here: one primary, up to three others, then More.</li>
-<li><strong>Red only for Delete.</strong> The Administration mockup draws Cancel in red; here Cancel is a plain <code>btn</code>.</li>
+<li><strong>Red only for Delete.</strong> The Administration mockup draws Cancel in red; here Cancel is <code>app-btn-outline</code>.</li>
 <li><strong>No disabled “after submission” row.</strong> The Create Quality Event mockup shows Create NCR, Place Hold and Trace Lot greyed out under the form; here they appear in the header once they can be used.</li>
 <li>The icons follow the mockups’ choices where they had one.</li>
 </ul>

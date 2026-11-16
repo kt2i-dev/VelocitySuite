@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review Checklist</title>
+<link rel="stylesheet" href="assets/site.css"></head>
+<body><main><nav class="mock-home" aria-label="Mockup navigation"><a href="index.html"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Mockups home</a></nav><h1>Review checklist</h1>
+<p>Check your screen against this before handing it off. Each line points to the standard it comes from.</p>
+<div class="toc"><a href="#styling">Styling</a><a href="#layout">Layout and fields</a><a href="#buttons">Buttons</a><a href="#display">Dates, status and icons</a><a href="#behavior">Behavior</a><a href="#stylesheet">If you changed the stylesheet</a></div>
+
+<h2 id="styling">Styling <span class="muted" style="font-weight:400;font-size:14px">· <a class="inl" href="theme.html#principles">Theme</a></span></h2>
+<div class="card"><ul>
+<li>Every widget is styled with shared <code>app-*</code> classes only. No screen-prefixed class (<code>ncr-</code>, <code>cc-</code>, <code>mrb-</code>…), new or copied.</li>
+<li>Style properties hold class names only: no hex colors, no pixel values, no inline styles.</li>
+<li>If you touched a screen that still uses a legacy family, it’s migrated to <code>app-*</code> in this change.</li>
+<li>Anything the shared classes didn’t cover was added as one shared <code>app-*</code> class and documented on the Theme page.</li>
+</ul></div>
+
+<h2 id="layout">Layout and fields <span class="muted" style="font-weight:400;font-size:14px">· <a class="inl" href="theme.html#choose">How to choose</a></span></h2>
+<div class="card"><ul>
+<li>The screen uses <code>LayoutSideMenu</code> and <code>app-page</code> or <code>app-page-wide</code>. No per-screen width or padding rules.</li>
+<li>Record screens: <code>app-split</code> with main and side columns; each section an <code>app-card app-card-sm app-stack</code> with an <code>app-row</code> heading and an <code>app-grid app-cols-N</code> body.</li>
+<li>Each field is an <code>app-field app-field-stack</code> with its label. In View mode values show as text (<code>app-label</code> / <code>app-value</code>), not as disabled inputs.</li>
+<li>Detail and edit are one screen with an edit-mode flag.</li>
+<li>The screen works at tablet and phone widths: grids collapse, nothing scrolls sideways except tables.</li>
+</ul></div>
+
+<h2 id="buttons">Buttons <span class="muted" style="font-weight:400;font-size:14px">· <a class="inl" href="buttons.html">Button standard</a></span></h2>
+<div class="card"><ul>
+<li>Every button is <code>app-btn</code> plus one variant, with its Phosphor icon and label from the Button standard.</li>
+<li>One <code>app-btn-primary</code> per screen or section. <code>app-btn-danger</code> for Delete only.</li>
+<li>Common buttons come from the button blocks; Save, Save Draft and Submit stay in the form and show “Saving…” while they run.</li>
+<li>Buttons sit where the placement table says: header actions in <code>app-actions</code>, More (⋯) for the rest, Cancel left of Save, row actions as <code>app-icon-link</code>.</li>
+<li>Unavailable actions are disabled with the reason as a tooltip; actions the role can never use are hidden.</li>
+</ul></div>
+
+<h2 id="display">Dates, status and icons <span class="muted" style="font-weight:400;font-size:14px">· <a class="inl" href="widgets.html">Custom widgets</a></span></h2>
+<div class="card"><ul>
+<li>Every date goes through DateFormat: MM/dd/yyyy, blank when null.</li>
+<li>Status and severity go through StatusBadge (<code>app-pill</code> variants); lifecycles through WorkflowStepper. No screen draws its own pill or stepper.</li>
+<li>Icons are Phosphor 2.0 names that resolve in the app. No SVG data URIs.</li>
+<li>Lists use <code>app-table</code>; the record number links to the record.</li>
+</ul></div>
+
+<h2 id="behavior">Behavior <span class="muted" style="font-weight:400;font-size:14px">· <a class="inl" href="quality-engineering/quality-event-capa/about.html">Quality Event &amp; Corrective Action Management</a></span></h2>
+<div class="card"><ul>
+<li>Status only changes through the workflow server actions, never by editing the field.</li>
+<li>Delete is for Draft records only and confirms, naming the record.</li>
+<li>Rejecting, reopening and requesting information ask for a comment or reason.</li>
+<li>Changes are written to the activity history (AuditLog).</li>
+<li>Any AI suggestion needs a person to Accept it before it applies.</li>
+</ul></div>
+
+<h2 id="stylesheet">If you changed the stylesheet <span class="muted" style="font-weight:400;font-size:14px">· <a class="inl" href="theme.html#saving">Theme</a></span></h2>
+<div class="card"><ul>
+<li>The braces balance, including inside <code>@media</code> blocks.</li>
+<li>No new literal colors, no new <code>!important</code> (except to override an OutSystems UI default, with a comment), no new screen-prefixed class.</li>
+<li>No new SVG data URIs or external URLs.</li>
+<li>The affected screens were checked in the browser.</li>
+</ul></div>
+</main></body></html>
