@@ -28,10 +28,10 @@
 <p class="muted">Classes: <code>app-page-header</code>, <code>app-back</code>, <code>app-actions</code>, <code>app-label</code>, <code>app-value</code></p>
 <h3>ButtonApply / ButtonClear <span class="muted" style="font-weight:400">(LifeView’s ButtonSearch / ButtonReset)</span></h3>
 <p>The two filter-panel buttons, renamed to the mockups’ labels. Same inputs as the other button blocks; no logic of their own.</p>
-<p class="muted">Classes: <code>app-btn app-btn-primary</code>, <code>app-btn app-btn-outline</code></p>
+<p class="muted">Classes: <code>btn btn-primary</code> (Apply), <code>btn</code> (Clear)</p>
 <h3>The button block pattern and the table class</h3>
 <ul>
-<li>Every button block uses <code>app-btn</code> plus one variant, takes <code>IsEnabled</code> and <code>ExtendedClass</code> and raises <code>Clicked</code>. See the <a class="inl" href="buttons.html">Button standard</a>.</li>
+<li>Every button block uses <code>btn</code> or <code>btn btn-primary</code>, takes <code>IsEnabled</code> and <code>ExtendedClass</code> and raises <code>Clicked</code>. See the <a class="inl" href="buttons.html">Button standard</a>.</li>
 <li>Every list table gets one theme class (LifeView’s <code>app-table</code>): header in the theme’s accent color, row striping, and <code>app-icon-link</code> row actions.</li>
 </ul>
 </div>
@@ -57,7 +57,7 @@
 <p class="muted">Classes: <code>app-table</code>, <code>app-pill</code>, <code>app-icon-warn (overdue)</code></p>
 <h3>ApprovalPanel</h3>
 <p>Approvers with their decision, date and comment, and Approve / Reject / Request Information for the current user. Comment required to reject. Used by MRB decisions, CAPA action plans, hold release and closures.</p>
-<p class="muted">Classes: <code>app-card app-card-sm app-stack</code>, <code>app-list-row</code>, <code>app-btn</code></p>
+<p class="muted">Classes: <code>app-card app-card-sm app-stack</code>, <code>app-list-row</code>, <code>btn</code></p>
 <h3>RelatedRecords</h3>
 <p>Cards for a record’s linked Quality Event, NCRs, MRBs, SCARs and CAPAs, each with its status. Clicking one opens it, so users move between related records without going home.</p>
 <p class="muted">Classes: <code>app-card app-card-sm</code>, <code>app-link</code>, <code>app-pill</code></p>

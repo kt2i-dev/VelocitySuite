@@ -8,25 +8,27 @@
 
 <h2 id="styling">Styling <span class="muted" style="font-weight:400;font-size:14px">· <a class="inl" href="theme.html#principles">Theme</a></span></h2>
 <div class="card"><ul>
-<li>Every widget is styled with shared <code>app-*</code> classes only. No screen-prefixed class (<code>ncr-</code>, <code>cc-</code>, <code>mrb-</code>…), new or copied.</li>
+<li>Every widget is styled with shared <code>app-*</code> classes only (and <code>btn</code> for buttons). No screen-prefixed class (<code>ncr-</code>, <code>cc-</code>, <code>mrb-</code>…), new or copied.</li>
+<li>Nothing was copied from a legacy screen: only the NCR detail and edit screens follow the pattern.</li>
 <li>Style properties hold class names only: no hex colors, no pixel values, no inline styles.</li>
 <li>If you touched a screen that still uses a legacy family, it’s migrated to <code>app-*</code> in this change.</li>
-<li>Anything the shared classes didn’t cover was added as one shared <code>app-*</code> class and documented on the Theme page.</li>
+<li>Anything the shared classes didn’t cover was <a class="inl" href="theme.html#ask">asked for as a new shared class</a>, not written as a screen rule.</li>
 </ul></div>
 
-<h2 id="layout">Layout and fields <span class="muted" style="font-weight:400;font-size:14px">· <a class="inl" href="theme.html#choose">How to choose</a></span></h2>
+<h2 id="layout">Layout and fields <span class="muted" style="font-weight:400;font-size:14px">· <a class="inl" href="theme.html#recipe">Layout recipe</a></span></h2>
 <div class="card"><ul>
-<li>The screen uses <code>LayoutSideMenu</code> and <code>app-page</code> or <code>app-page-wide</code>. No per-screen width or padding rules.</li>
+<li>The screen uses <code>LayoutSideMenu</code>, with its content in <code>MainContent</code> inside <code>app-page</code> or <code>app-page-wide</code>. No per-screen width or padding rules.</li>
+<li>One card per topic, with a grid inside each card.</li>
 <li>Record screens: <code>app-split</code> with main and side columns; each section an <code>app-card app-card-sm app-stack</code> with an <code>app-row</code> heading and an <code>app-grid app-cols-N</code> body.</li>
 <li>Each field is an <code>app-field app-field-stack</code> with its label. In View mode values show as text (<code>app-label</code> / <code>app-value</code>), not as disabled inputs.</li>
-<li>Detail and edit are one screen with an edit-mode flag.</li>
+<li>Detail and edit are one screen with an edit-mode flag, laid out as the <a class="inl" href="template.html">Details/Edit Screen Template</a>: each field appears once, the same cards switch to inputs in Edit mode.</li>
 <li>The screen works at tablet and phone widths: grids collapse, nothing scrolls sideways except tables.</li>
 </ul></div>
 
 <h2 id="buttons">Buttons <span class="muted" style="font-weight:400;font-size:14px">· <a class="inl" href="buttons.html">Button standard</a></span></h2>
 <div class="card"><ul>
-<li>Every button is <code>app-btn</code> plus one variant, with its Phosphor icon and label from the Button standard.</li>
-<li>One <code>app-btn-primary</code> per screen or section. <code>app-btn-danger</code> for Delete only.</li>
+<li>Every button is <code>btn</code> or <code>btn btn-primary</code>, with its Phosphor icon and label from the Button standard. No custom button classes.</li>
+<li>One <code>btn-primary</code> per screen or section. Delete is a plain <code>btn</code> that asks for confirmation.</li>
 <li>Common buttons come from the button blocks; Save, Save Draft and Submit stay in the form and show “Saving…” while they run.</li>
 <li>Buttons sit where the placement table says: header actions in <code>app-actions</code>, More (⋯) for the rest, Cancel left of Save, row actions as <code>app-icon-link</code>.</li>
 <li>Unavailable actions are disabled with the reason as a tooltip; actions the role can never use are hidden.</li>

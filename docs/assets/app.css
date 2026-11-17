@@ -1,0 +1,223 @@
+/* ==========================================================================
+   Velocity Suite: app stylesheet for the screen mockups.
+   Written to the Theme conventions: app-* classes, --app-* tokens, no screen
+   classes, no literal colors outside the tokens, no !important.
+   Classes marked PROPOSED aren't in the app's guide yet.
+   mock-* classes only stand in for things OutSystems draws itself
+   (LayoutSideMenu, Tabs, inputs) or drive the mockup; they aren't app classes.
+   ========================================================================== */
+
+/* ---------- Tokens ---------- */
+:root{
+  /* Color: KT2i navy and amber from the landing mockups, with a working blue accent */
+  --app-accent:#1d5bd8;
+  --app-accent-hover:#174bb5;
+  --app-accent-light:#e8f0fd;
+  --app-danger:#c0392b;
+  --app-success:#1e7b45;
+  --app-warning:#a35a00;
+  /* PROPOSED: light backgrounds for pills and panels */
+  --app-danger-light:#fdecea;
+  --app-success-light:#e6f4ec;
+  --app-warning-light:#fff3e0;
+  --app-neutral-light:#eef1f5;
+  /* PROPOSED: brand */
+  --app-brand-navy:#0e2340;
+  --app-brand-amber:#f5a524;
+  /* Text and surface */
+  --app-text:#1b2330;
+  --app-text-muted:#5d6878;
+  --app-border:#dde3ea;
+  --app-surface:#ffffff;
+  --app-surface-alt:#f4f6f9;
+  /* Shape */
+  --app-radius-s:6px;
+  --app-radius-m:10px;
+  --app-radius-pill:999px;
+  --app-shadow-card:0 1px 2px rgba(14,35,64,.06);
+  /* Type */
+  --app-font:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  /* Menu */
+  --app-menu-background:var(--app-brand-navy); /* PROPOSED */
+  --app-menu-text-color:#c9d3e1;
+  --app-menu-active-text-color:#ffffff;
+  --app-menu-active-background-color:rgba(255,255,255,.08);
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--app-surface-alt);color:var(--app-text);font:14px/1.45 var(--app-font)}
+a{color:var(--app-accent)}
+svg.i{width:18px;height:18px;flex:none;vertical-align:middle}
+
+/* ---------- Page shell ---------- */
+.app-page,.app-page-wide{width:100%;margin:0 auto;padding:20px 28px 40px}
+.app-page{max-width:1100px}
+.app-page-wide{max-width:1440px}
+.app-page-header{display:flex;flex-direction:column;gap:12px;margin-bottom:16px;min-width:0}
+.app-page-header>*{min-width:0}
+.app-back{display:inline-flex;align-items:center;gap:4px;color:var(--app-accent);text-decoration:none;font-size:13px;font-weight:500}
+.app-back svg.i{width:14px;height:14px}
+.app-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-left:auto}
+.app-form-full{width:100%}
+.app-form-footer{display:flex;justify-content:flex-end;gap:8px;padding-top:12px;border-top:1px solid var(--app-border)}
+
+/* ---------- Layout ---------- */
+.app-split{display:flex;gap:16px;align-items:flex-start}
+.app-split-main{flex:0 1 73%;min-width:0;display:flex;flex-direction:column;gap:16px}
+.app-split-side{flex:0 1 27%;min-width:260px;display:flex;flex-direction:column;gap:16px}
+
+/* ---------- Cards ---------- */
+.app-card{background:var(--app-surface);border:1px solid var(--app-border);border-radius:var(--app-radius-m);box-shadow:var(--app-shadow-card);padding:20px}
+.app-card-sm{padding:16px}
+.app-card-lg{padding:28px}
+.app-card-full{width:100%}
+.app-card-title{margin:0;font-size:15px;font-weight:600}
+.app-section-title{margin:0;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--app-text-muted)}
+.app-stack{display:flex;flex-direction:column;gap:12px}
+.app-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.app-num{font-variant-numeric:tabular-nums}
+
+/* ---------- Grids ---------- */
+.app-grid{display:grid;gap:14px 20px}
+.app-cols-1{grid-template-columns:1fr}
+.app-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.app-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.app-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+
+/* ---------- Fields ---------- */
+.app-field{display:flex;gap:4px;min-width:0}
+.app-field-stack{flex-direction:column}
+.app-field-label,.app-label{font-size:12px;font-weight:500;color:var(--app-text-muted)}
+.app-value{font-weight:500;overflow-wrap:anywhere}
+.app-value-lg{font-size:24px;font-weight:600;line-height:1.2}
+.app-text{color:var(--app-text);line-height:1.55}
+.app-check{display:flex;align-items:center;gap:8px}
+.app-label .req{color:var(--app-danger)}
+
+/* ---------- Buttons (OutSystems UI classes, styled by the theme) ---------- */
+.btn{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border:1px solid var(--app-border);border-radius:var(--app-radius-s);background:var(--app-surface);color:var(--app-text);font:500 13.5px var(--app-font);white-space:nowrap;cursor:pointer;text-decoration:none}
+.btn:hover{border-color:var(--app-accent);color:var(--app-accent)}
+.btn-primary{background:var(--app-accent);border-color:var(--app-accent);color:var(--app-surface)}
+.btn-primary:hover{background:var(--app-accent-hover);color:var(--app-surface)}
+.btn svg.i{width:16px;height:16px}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+
+/* ---------- Status ---------- */
+.app-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:var(--app-radius-pill);background:var(--app-neutral-light);color:var(--app-text);font-size:12px;font-weight:600;white-space:nowrap}
+.app-pill-info{background:var(--app-accent-light);color:var(--app-accent-hover)}
+.app-pill-success{background:var(--app-success-light);color:var(--app-success)}
+.app-pill-warning{background:var(--app-warning-light);color:var(--app-warning)}
+.app-pill-danger{background:var(--app-danger-light);color:var(--app-danger)}
+.app-alert-warning{display:flex;gap:10px;align-items:flex-start;padding:10px 14px;border:1px solid var(--app-warning);border-radius:var(--app-radius-s);background:var(--app-warning-light);color:var(--app-text)}
+.app-alert-warning svg.i{color:var(--app-warning)}
+.app-panel{padding:12px 14px;border-radius:var(--app-radius-s);background:var(--app-surface-alt)}
+.app-panel-info{background:var(--app-accent-light)}
+.app-panel-danger{background:var(--app-danger-light)}
+
+/* ---------- Data ---------- */
+.app-table{width:100%;border-collapse:collapse;font-size:13.5px}
+.app-table th{padding:10px 12px;border-bottom:1px solid var(--app-border);background:var(--app-surface-alt);color:var(--app-text-muted);font-size:12px;font-weight:600;text-align:left;white-space:nowrap}
+.app-table td{padding:10px 12px;border-bottom:1px solid var(--app-border);vertical-align:middle}
+.app-table td.app-num{white-space:nowrap}
+.app-table tbody tr:hover{background:var(--app-surface-alt)}
+.app-attach-table{width:100%;border-collapse:collapse;font-size:13px}
+.app-attach-table td{padding:8px 0;border-bottom:1px solid var(--app-border)}
+.app-kpi{display:flex;flex-direction:column;gap:2px;padding:14px 16px;background:var(--app-surface);border:1px solid var(--app-border);border-radius:var(--app-radius-m);box-shadow:var(--app-shadow-card);text-decoration:none;color:var(--app-text)}
+.app-kpi:hover{border-color:var(--app-accent)}
+.app-kpi-label{font-size:12.5px;color:var(--app-text-muted)}
+.app-kpi-value{font-size:26px;font-weight:600;line-height:1.2}
+.app-kpi-note{font-size:12px;color:var(--app-text-muted)}
+.app-link{color:var(--app-accent);font-weight:600;text-decoration:none}
+.app-link:hover{text-decoration:underline}
+.app-icon-link{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:var(--app-radius-s);color:var(--app-text-muted)}
+.app-icon-link:hover{background:var(--app-surface-alt);color:var(--app-accent)}
+.app-icon-link-danger:hover{color:var(--app-danger)}
+.app-icon-warn{color:var(--app-warning)}
+
+/* ---------- Lists ---------- */
+.app-list-stack{display:flex;flex-direction:column}
+.app-list-row{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--app-border)}
+.app-list-stack>.app-list-row:first-child{border-top:0;padding-top:0}
+.app-rule{height:1px;border:0;background:var(--app-border);margin:4px 0}
+
+/* ---------- Workflow ---------- */
+.app-steps{display:flex;align-items:flex-start;overflow-x:auto} /* PROPOSED: the stepper's container */
+.app-step-done,.app-step-current,.app-step-pending{flex:1 1 0;min-width:96px;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;font-size:12.5px;text-align:center}
+.app-step-done::before,.app-step-current::before,.app-step-pending::before{content:"";position:absolute;top:11px;left:-50%;width:100%;height:2px;background:var(--app-border);z-index:0}
+.app-steps>:first-child::before{display:none}
+.app-step-done::before,.app-step-current::before{background:var(--app-accent)}
+.app-step-dot{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;border:2px solid var(--app-border);background:var(--app-surface);color:var(--app-surface)}
+.app-step-dot svg.i{width:14px;height:14px}
+.app-step-done .app-step-dot{background:var(--app-accent);border-color:var(--app-accent)}
+.app-step-current .app-step-dot{border-color:var(--app-accent);box-shadow:0 0 0 4px var(--app-accent-light)}
+.app-step-name{color:var(--app-text-muted)}
+.app-step-current .app-step-name{color:var(--app-text);font-weight:600}
+
+/* ---------- Upload ---------- */
+.app-dropzone{display:flex;align-items:center;justify-content:center;gap:8px;padding:16px;border:1.5px dashed var(--app-border);border-radius:var(--app-radius-s);color:var(--app-text-muted);font-size:13px}
+.app-upload-row{display:flex;align-items:center;gap:10px}
+
+/* ---------- Narrow screens ---------- */
+@media (max-width:1100px){
+  .app-split{flex-direction:column}
+  .app-split-main,.app-split-side{flex-basis:auto;width:100%}
+  .app-cols-4{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:640px){
+  .app-cols-2,.app-cols-3,.app-cols-4{grid-template-columns:1fr}
+  .app-page,.app-page-wide{padding:16px}
+}
+
+/* ==========================================================================
+   mock-*: stand-ins for OutSystems UI widgets and the mockup frame
+   ========================================================================== */
+/* The mockup bar above each screen (not part of the app) */
+.mock-bar{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:8px 16px;background:#fffbe8;border-bottom:1px dashed #c9b458;font:13px var(--app-font)}
+.mock-bar strong{font-weight:600}
+.mock-bar a{color:var(--app-text);font-weight:600;text-decoration:none}
+.mock-bar a:hover{color:var(--app-accent)}
+.mock-bar .mock-sp{flex:1}
+.mock-toggle{display:inline-flex;border:1px solid #c9b458;border-radius:var(--app-radius-s);overflow:hidden}
+.mock-toggle button{border:0;background:transparent;padding:4px 12px;font:600 12.5px var(--app-font);cursor:pointer;color:var(--app-text)}
+.mock-toggle button.on{background:var(--app-text);color:#fff}
+.mock-note{display:inline-block;padding:1px 6px;border-radius:4px;background:#fff1b8;color:#6b5600;font-size:11px;font-weight:600}
+
+/* LayoutSideMenu stand-in */
+.mock-shell{display:flex;min-height:100vh}
+.mock-menu{flex:none;width:236px;background:var(--app-menu-background);color:var(--app-menu-text-color);display:flex;flex-direction:column;padding:16px 12px;gap:2px}
+.mock-brand{display:flex;align-items:center;gap:10px;padding:4px 8px 18px;color:#fff}
+.mock-logo{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;background:var(--app-brand-amber);color:var(--app-brand-navy);font-weight:800;font-size:13px}
+.mock-brand small{display:block;color:var(--app-menu-text-color);font-size:11.5px}
+.mock-brand b{font-size:14px}
+.mock-menu a{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--app-radius-s);color:var(--app-menu-text-color);text-decoration:none;font-size:13.5px;border-left:3px solid transparent}
+.mock-menu a:hover{color:var(--app-menu-active-text-color)}
+.mock-menu a.active{background:var(--app-menu-active-background-color);color:var(--app-menu-active-text-color);border-left-color:var(--app-brand-amber);font-weight:600}
+.mock-menu .mock-group{margin:14px 10px 4px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#7f8ea3}
+.mock-body{flex:1;min-width:0;display:flex;flex-direction:column}
+.mock-body>*{min-width:0}
+.mock-top{display:flex;align-items:center;gap:14px;height:56px;padding:0 24px;background:var(--app-surface);border-bottom:1px solid var(--app-border)}
+.mock-search{display:flex;align-items:center;gap:8px;flex:0 1 420px;height:36px;padding:0 12px;border:1px solid var(--app-border);border-radius:var(--app-radius-s);color:var(--app-text-muted);font-size:13px}
+.mock-user{display:flex;align-items:center;gap:10px;margin-left:auto;font-size:13px}
+.mock-user small{display:block;color:var(--app-text-muted);font-size:11.5px}
+.mock-avatar{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--app-accent-light);color:var(--app-accent);font-weight:700;font-size:12px}
+
+/* Tabs widget stand-in */
+.mock-tabs{display:flex;gap:4px;border-bottom:1px solid var(--app-border);overflow-x:auto}
+.mock-tabs button{border:0;background:none;padding:10px 14px;font:500 13.5px var(--app-font);color:var(--app-text-muted);border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap}
+.mock-tabs button.on{color:var(--app-accent);border-bottom-color:var(--app-accent);font-weight:600}
+.mock-tabs .count{margin-left:6px;padding:0 6px;border-radius:var(--app-radius-pill);background:var(--app-neutral-light);font-size:11px}
+
+/* Input widget stand-ins */
+.mock-input{width:100%;height:36px;padding:0 10px;border:1px solid var(--app-border);border-radius:var(--app-radius-s);background:var(--app-surface);color:var(--app-text);font:14px var(--app-font)}
+textarea.mock-input{height:auto;min-height:72px;padding:8px 10px;resize:vertical}
+.mock-input:focus{outline:2px solid var(--app-accent-light);border-color:var(--app-accent)}
+
+/* View / Edit switch for the mockup */
+body:not(.is-edit) .edit-only{display:none}
+body.is-edit .view-only{display:none}
+[data-panel][hidden]{display:none}
+
+@media (max-width:860px){
+  .mock-menu{display:none}
+  .mock-search{display:none}
+}

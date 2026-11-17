@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Details/Edit Screen Template</title>
+<link rel="stylesheet" href="assets/site.css"></head>
+<body><main><nav class="mock-home" aria-label="Mockup navigation"><a href="index.html"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Mockups home</a></nav><h1>Details/Edit Screen Template</h1>
+<p>One screen per record type, with a View mode and an Edit mode. Every record workspace (Quality Event, NCR, MRB, CAPA, SCAR) is built this way, from the shared classes on the <a class="inl" href="theme.html">Theme</a> page.</p>
+<div class="row c2">
+<a class="tile" href="quality-engineering/quality-event-capa/ncr-workspace.html">NCR workspace mockup<span>The template applied to NCR-2026-00143, in View mode. Switch to Edit with the bar at the top.</span></a>
+<a class="tile" href="quality-engineering/quality-event-capa/ncr-list.html">NCR list mockup<span>The list that opens it: KPIs, filters, the table and row actions</span></a>
+</div>
+<div class="toc"><a href="#anatomy">Anatomy</a><a href="#modes">View and Edit</a><a href="#rules">Rules</a><a href="#build">Building it</a><a href="#list">The list screen</a><a href="#changed">What changes from today’s NCR screens</a><a href="#proposed">Proposed classes</a></div>
+
+<h2 id="anatomy">Anatomy, top to bottom</h2>
+<div class="card">
+<table class="dm"><thead><tr><th>Part</th><th>What goes there</th><th>Classes / blocks</th></tr></thead><tbody>
+<tr><td>Back</td><td>A link to the list or record the user came from, named after it (“NCRs”).</td><td><code>app-back</code></td></tr>
+<tr><td>Title row</td><td>The record number as the page title, its status, severity (High and Critical only) and HOLD if material is held, with the record’s title underneath. Not a generic name like “NCR &amp; Containment Workspace”.</td><td><code>app-page-header</code>, StatusBadge</td></tr>
+<tr><td>Header buttons</td><td>The next workflow step as the one primary, up to three everyday actions, then More. See the <a class="inl" href="buttons.html">Button standard</a>.</td><td><code>app-actions</code>, button blocks</td></tr>
+<tr><td>Key fields</td><td>Up to eight identifiers: related record, material, lot, supplier, owner, dates, source. Shown once, here.</td><td><code>app-card app-card-sm</code> › <code>app-grid app-cols-4</code></td></tr>
+<tr><td>Stepper</td><td>The lifecycle from the UI/UX spec, current step highlighted, fitted to the width.</td><td>WorkflowStepper</td></tr>
+<tr><td>Alert</td><td>Only when something needs attention now (“40 units from this lot have shipped”).</td><td><code>app-alert-warning</code></td></tr>
+<tr><td>Main column</td><td>Tabs: <strong>Overview</strong> first, then the record’s own tabs (Containment, Holds, Disposition…), then <strong>Activity</strong> and <strong>Attachments</strong> last. Tab labels carry a count where useful.</td><td><code>app-split-main</code>, OutSystems UI Tabs</td></tr>
+<tr><td>Overview</td><td>One card per topic, each with a grid of label and value rows.</td><td><code>app-card app-card-sm app-stack</code> › <code>app-row</code> heading › <code>app-grid app-cols-N</code></td></tr>
+<tr><td>Side column</td><td><strong>Closure readiness</strong> (each closing rule with a check or a cross), <strong>Related records</strong>, then the <strong>Quality Assistant</strong>.</td><td><code>app-split-side</code>, RelatedRecords, AIAssistantPanel</td></tr>
+</tbody></table>
+</div>
+
+<h2 id="modes">View and Edit</h2>
+<div class="card">
+<table class="dm"><thead><tr><th></th><th>View</th><th>Edit</th></tr></thead><tbody>
+<tr><td>Header buttons</td><td>Next step (primary), Edit, two more, More</td><td>Delete (Draft only) | Cancel · Save. Workflow buttons are hidden, not disabled.</td></tr>
+<tr><td>Fields</td><td>Text: <code>app-label</code> and <code>app-value</code>. Yes/no fields read “Yes” or “No”.</td><td>The same cards and grids, with inputs in place of the values. Required fields get a red star.</td></tr>
+<tr><td>System fields</td><td>Text</td><td>Still text: record number, status, created by and date, quantities that come from other records.</td></tr>
+<tr><td>Tabs</td><td>All available</td><td>Switches to Overview, which holds the editable fields.</td></tr>
+<tr><td>Side column</td><td colspan="2">Unchanged.</td></tr>
+</tbody></table>
+<p class="muted">Status never changes in Edit mode: it only moves through the workflow buttons.</p>
+</div>
+
+<h2 id="rules">Rules</h2>
+<div class="card"><ul>
+<li><strong>Each field appears once on the screen.</strong> If it’s in the key fields, it isn’t repeated in a card.</li>
+<li>No numbered section badges; the card titles are enough.</li>
+<li>Labels come from the field’s name, never a placeholder (“labelProduct”).</li>
+<li>Dates through DateFormat: MM/dd/yyyy, “MM/dd/yyyy HH:mm” where the time matters.</li>
+<li>Measurements: requirement and actual side by side (<code>app-panel-info</code>, <code>app-panel-danger</code>), with the difference spelled out.</li>
+<li>Empty optional fields show nothing, not “-” or “N/A”. A card with nothing to show isn’t shown.</li>
+<li>Closing rules are shown as Closure readiness, so the user can see why Close isn’t available yet.</li>
+</ul></div>
+
+<h2 id="build">Building it in OutSystems</h2>
+<div class="card"><ul>
+<li><strong>One screen</strong> with an <code>IsEditMode</code> local variable (default False) and a local copy of the record for editing.</li>
+<li>Each field is an <code>If</code> on <code>IsEditMode</code>: an Expression with <code>app-value</code>, or the input. The label and container (<code>app-field app-field-stack</code>) sit outside the If, so nothing moves when the mode changes.</li>
+<li>The header has two button groups, each in an If: the View buttons and the Edit buttons.</li>
+<li><strong>Edit</strong> copies the record into the local variable and sets <code>IsEditMode</code>. <strong>Cancel</strong> discards the copy. <strong>Save</strong> runs the form’s validation, then the save server action, then returns to View and refreshes the record.</li>
+<li>An optional <code>Edit</code> input parameter opens the screen straight into Edit mode (for “New” or a link from a list).</li>
+<li>No edit form below the details and no second copy of the details below the form: the mode switches the same cards.</li>
+</ul></div>
+
+<h2 id="list">The list screen</h2>
+<div class="card"><ul>
+<li>Title with a one-line description; Export, then New (primary) on the right.</li>
+<li>Four KPI cards that each open the list filtered (<code>app-kpi</code>).</li>
+<li>Search and the common filters in one row, More filters for the rest.</li>
+<li>Table (<code>app-table</code>): the record number as a link, title with material underneath, status and severity badges, then the columns people sort by. Rarely-needed columns become filters.</li>
+<li>Row actions: Open and More as <code>app-icon-link</code>. A clock flags records with overdue actions (BR-014).</li>
+</ul></div>
+
+<h2 id="changed">What changes from today’s NCR screens</h2>
+<div class="card"><ul>
+<li>Detail and edit are one screen; the edit form no longer has the detail view repeated below it.</li>
+<li>NCR number, status, quality event, material, lot and supplier appear once instead of two or three times.</li>
+<li>The page title is the record, not “NCR &amp; Containment Workspace”.</li>
+<li>Status labels are readable (“Awaiting MRB”, not “QaTriage”) and follow the UI/UX spec’s lifecycle. Four pill colors by meaning: grey draft, blue in progress, amber waiting on someone, green done.</li>
+<li>Severity colors only for High and Critical.</li>
+<li>One date format; the stepper fits the width; the separate Workflow card is gone.</li>
+<li>Validation Rules became Closure readiness, with live checks.</li>
+<li>List: one primary button, consistent NCR numbers (NCR-2026-00143), Responsible Department moved to the filters.</li>
+</ul></div>
+
+<h2 id="proposed">Proposed classes and tokens</h2>
+<div class="card">
+<p>The mockups need a few things the app’s guide doesn’t have yet. They’re in <code>assets/app.css</code>, marked PROPOSED:</p>
+<ul>
+<li><code>app-pill</code> with no variant is the neutral (grey) pill, for Draft and Cancelled.</li>
+<li><code>--app-danger-light</code>, <code>--app-success-light</code>, <code>--app-warning-light</code>, <code>--app-neutral-light</code>: pill and panel backgrounds.</li>
+<li><code>app-steps</code> and <code>app-step-dot</code>: the stepper’s container and circle.</li>
+<li><code>app-kpi-label</code>, <code>app-kpi-value</code>, <code>app-kpi-note</code>: the parts of a KPI card.</li>
+<li><code>--app-menu-background</code>, <code>--app-brand-navy</code>, <code>--app-brand-amber</code>: the KT2i navy side menu with an amber active marker, taken from the landing-page mockups.</li>
+</ul>
+<p class="muted">The side menu, top bar, tabs and inputs in the mockups stand in for OutSystems UI widgets (<code>mock-*</code> classes); they aren’t app classes.</p>
+</div>
+</main></body></html>

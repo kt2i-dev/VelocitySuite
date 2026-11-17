@@ -3,8 +3,23 @@
 <title>Theme</title>
 <link rel="stylesheet" href="assets/site.css"></head>
 <body><main><nav class="mock-home" aria-label="Mockup navigation"><a href="index.html"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Mockups home</a></nav><h1>Theme</h1>
-<p>The design conventions every Velocity Suite application shares: one stylesheet, one set of <code>app-*</code> classes and <code>--app-*</code> tokens, and the rules for using them. A fix to a shared class fixes every screen that uses it.</p>
-<div class="toc"><a href="#decisions">Decisions</a><a href="#principles">Principles</a><a href="#tokens">Tokens</a><a href="#classes">Shared classes</a><a href="#choose">How to choose</a><a href="#screens">Detail and edit screens</a><a href="#legacy">Legacy classes</a><a href="#saving">Before saving the stylesheet</a></div>
+<p>The design conventions every Velocity Suite application shares: one stylesheet, one set of <code>app-*</code> classes and <code>--app-*</code> tokens, and the rules for using them. A fix to a shared class fixes every screen that uses it. The stylesheet carries the same guide in the <strong>APP DESIGN SYSTEM GUIDE</strong> comment at its top.</p>
+<div class="toc"><a href="#rule">The rule</a><a href="#status">Where things stand</a><a href="#decisions">Decisions</a><a href="#principles">Principles</a><a href="#recipe">Layout recipe</a><a href="#classes">Shared classes</a><a href="#tokens">Tokens</a><a href="#screens">Detail and edit screens</a><a href="#legacy">Legacy: don’t copy</a><a href="#gaps">Known gaps</a><a href="#ask">Asking for a new class</a><a href="#saving">Before saving the stylesheet</a></div>
+
+<h2 id="rule">The rule</h2>
+<div class="card">
+<p><strong>New screens use the shared <code>app-*</code> classes only.</strong> No new per-screen class families (<code>xyz-</code>), ever. If the shared classes don’t cover something, the gap gets a new shared class (see <a class="inl" href="#ask">Asking for a new class</a>), not a one-off.</p>
+<p class="muted">Nothing in the stylesheet enforces this, so it’s checked in review: see the <a class="inl" href="review.html">Review checklist</a>.</p>
+</div>
+
+<h2 id="status">Where things stand</h2>
+<div class="card">
+<ul>
+<li><strong>In place:</strong> the <code>app-*</code> classes and <code>--app-*</code> tokens; buttons on plain OutSystems UI <code>btn</code> / <code>btn btn-primary</code> (79 buttons on 8 screens, no custom button classes); the guide comment at the top of the stylesheet; 143 dead rules removed.</li>
+<li><strong>Only the NCR detail and edit screens fully follow the pattern.</strong> They have no screen-specific style families left. Every other screen still uses its old per-screen classes, including MRB, CAPA and the NCR list.</li>
+<li>The stylesheet still has <code>!important</code> rules and legacy families waiting to be removed.</li>
+</ul>
+</div>
 
 <h2 id="decisions">Decisions</h2>
 <div class="card">
@@ -13,14 +28,14 @@
 <li><strong>Dates:</strong> MM/dd/yyyy everywhere, through the <a class="inl" href="widgets.html">DateFormat</a> block.</li>
 <li><strong>Icons:</strong> Phosphor 2.0, regular weight. Names are on the <a class="inl" href="buttons.html">Button standard</a>.</li>
 <li><strong>Font:</strong> Inter, through <code>--app-font</code>, loaded from the app’s own resources rather than Google Fonts so it works offline.</li>
-<li><strong>Buttons:</strong> <code>app-btn</code> with <code>app-btn-primary</code>, <code>app-btn-outline</code> or <code>app-btn-danger</code>. See the <a class="inl" href="buttons.html">Button standard</a>.</li>
+<li><strong>Buttons:</strong> OutSystems UI’s <code>btn</code> for secondary actions and <code>btn btn-primary</code> for the main action. Nothing custom. See the <a class="inl" href="buttons.html">Button standard</a>.</li>
 </ul>
 </div>
 
 <h2 id="principles">Principles</h2>
 <div class="card">
 <ul>
-<li><strong>One shared vocabulary.</strong> Every screen is styled with <code>app-*</code> classes and <code>--app-*</code> tokens. No per-screen class families such as <code>ncr-</code>, <code>cc-</code> or <code>mrb-</code>.</li>
+<li><strong>One shared vocabulary.</strong> Every screen is styled with <code>app-*</code> classes and <code>--app-*</code> tokens (plus OutSystems UI’s <code>btn</code> classes).</li>
 <li><strong>Style by class, never inline.</strong> A widget’s Style property only holds class names. No hex colors or pixel values in widget properties.</li>
 <li><strong>Layout from the shared layout classes</strong> or the widgets’ own layout modes. No rules scoped to one screen to force widths (such as <code>:has(.my-page)</code>): use <code>app-page</code> or <code>app-page-wide</code>.</li>
 <li><strong>Avoid <code>!important</code>.</strong> Allowed only to override an OutSystems UI default, with a short comment saying what it overrides.</li>
@@ -28,6 +43,37 @@
 <li><strong>Colors come from tokens</strong>, such as <code>var(--app-accent)</code>, never literals.</li>
 <li><strong>No new SVG data URIs or external URLs</strong> in the stylesheet. Add them as app resources so they work offline.</li>
 </ul>
+</div>
+
+<h2 id="recipe">Layout recipe</h2>
+<div class="card">
+<ol style="margin:0 0 10px;padding-left:18px">
+<li><strong>Screen content goes in <code>MainContent</code></strong> of the layout, inside <code>app-page</code> (or <code>app-page-wide</code> for record screens).</li>
+<li><strong>One card per topic</strong>: <code>app-card app-card-sm app-stack</code>, with an <code>app-row</code> heading. Record screens put the cards in <code>app-split</code>: <code>app-split-main</code> for the record, <code>app-split-side</code> for status, related records and the assistant.</li>
+<li><strong>A grid inside each card</strong>: <code>app-grid app-cols-N</code>, never side-by-side containers with fixed widths.</li>
+<li><strong>Label and value rows</strong> in the grid. Edit mode: an <code>app-field app-field-stack</code> holding the label and the input. View mode: the value as text with <code>app-label</code> and <code>app-value</code>, not a disabled input.</li>
+</ol>
+<ul>
+<li><strong>Status chips:</strong> <code>app-pill</code> with a variant. If the color depends on data, pick the variant with an If expression in the Style property (or use the <a class="inl" href="widgets.html#new">StatusBadge</a> block, which does this for you).</li>
+</ul>
+</div>
+
+<h2 id="classes">Shared classes</h2>
+<div class="card" style="overflow-x:auto">
+<table class="dm"><thead><tr><th>Group</th><th>Classes</th><th>What for · example</th></tr></thead><tbody>
+<tr><td>Page shell</td><td><code>app-page</code>, <code>app-page-wide</code>, <code>app-page-header</code>, <code>app-back</code>, <code>app-actions</code>, <code>app-form-full</code>, <code>app-form-footer</code></td><td>The frame of a screen inside <code>MainContent</code>: the header with Back and the action buttons, and a full-width form with its button footer. The NCR workspace header.</td></tr>
+<tr><td>Layout</td><td><code>app-split</code>, <code>app-split-main</code> (about 73%), <code>app-split-side</code> (about 27%)</td><td>Two columns on record screens. NCR details on the left, status and related records on the right.</td></tr>
+<tr><td>Cards</td><td><code>app-card</code>, <code>app-card-sm</code>, <code>app-card-lg</code>, <code>app-card-full</code>, <code>app-card-title</code>, <code>app-section-title</code>, <code>app-stack</code>, <code>app-row</code>, <code>app-num</code></td><td>One card per topic, stacked contents, a heading row. A “Disposition” card on an NCR.</td></tr>
+<tr><td>Grids</td><td><code>app-grid</code> with <code>app-cols-1</code> to <code>app-cols-4</code></td><td>The fields inside a card; collapse on narrow screens. Part, lot, supplier and quantity in <code>app-cols-4</code>.</td></tr>
+<tr><td>Fields</td><td>Inputs: <code>app-field</code>, <code>app-field-stack</code>, <code>app-field-label</code>. Read-only: <code>app-label</code>, <code>app-value</code>, <code>app-value-lg</code>, <code>app-text</code>. <code>app-check</code></td><td>A label above its input or value; <code>app-value-lg</code> for a headline number; <code>app-check</code> for checkbox and switch rows.</td></tr>
+<tr><td>Buttons</td><td><code>btn</code>, <code>btn btn-primary</code></td><td>OutSystems UI’s classes, not <code>app-*</code>. See the <a class="inl" href="buttons.html">Button standard</a>.</td></tr>
+<tr><td>Status</td><td><code>app-pill</code> with <code>-info</code>, <code>-success</code>, <code>-warning</code> or <code>-danger</code>; <code>app-alert-warning</code>; <code>app-panel</code> with <code>-info</code> or <code>-danger</code></td><td>Status chips, a warning banner, a tinted info or danger panel. “Lot RM48-9817 is on hold” as <code>app-alert-warning</code>.</td></tr>
+<tr><td>Data</td><td><code>app-table</code>, <code>app-attach-table</code>, the <code>app-kpi</code> family, <code>app-link</code>, <code>app-icon-link</code>, <code>app-icon-link-danger</code>, <code>app-icon-warn</code></td><td>Lists, the attachments list, dashboard tiles, links and row icon actions. Open and More in a list row as <code>app-icon-link</code>.</td></tr>
+<tr><td>Lists</td><td><code>app-list-stack</code>, <code>app-list-row</code>, <code>app-rule</code></td><td>Stacked rows outside a table, with a divider. Approvers, history entries.</td></tr>
+<tr><td>Workflow</td><td><code>app-step-done</code>, <code>app-step-current</code>, <code>app-step-pending</code>, <code>app-step-name</code></td><td>The lifecycle stepper. Used through the WorkflowStepper block.</td></tr>
+<tr><td>Upload</td><td><code>app-dropzone</code>, <code>app-upload-row</code></td><td>Drag-and-drop evidence upload. Used through the Attachments block.</td></tr>
+</tbody></table>
+<p class="muted">The <a class="inl" href="widgets.html">custom widgets</a> are built from these classes; each one lists the classes it uses. The <a class="inl" href="template.html">screen mockups</a> use them through <code>assets/app.css</code>, which also has a few <a class="inl" href="template.html#proposed">proposed classes and tokens</a>.</p>
 </div>
 
 <h2 id="tokens">Tokens</h2>
@@ -41,48 +87,39 @@
 </tbody></table>
 </div>
 
-<h2 id="classes">Shared classes</h2>
-<div class="card">
-<table class="dm"><thead><tr><th>Group</th><th>Classes</th></tr></thead><tbody>
-<tr><td>Page shell</td><td><code>app-page</code>, <code>app-page-wide</code>, <code>app-page-header</code>, <code>app-back</code>, <code>app-actions</code>, <code>app-form-full</code>, <code>app-form-footer</code></td></tr>
-<tr><td>Layout</td><td><code>app-split</code>, <code>app-split-main</code> (about 73%), <code>app-split-side</code> (about 27%)</td></tr>
-<tr><td>Cards</td><td><code>app-card</code>, <code>app-card-sm</code>, <code>app-card-lg</code>, <code>app-card-full</code>, <code>app-card-title</code>, <code>app-section-title</code>, <code>app-stack</code>, <code>app-row</code>, <code>app-num</code></td></tr>
-<tr><td>Grids</td><td><code>app-grid</code> with <code>app-cols-1</code> to <code>app-cols-4</code>, which collapse on narrow screens</td></tr>
-<tr><td>Fields</td><td>Inputs: <code>app-field</code>, <code>app-field-stack</code>, <code>app-field-label</code>. Read-only text: <code>app-label</code>, <code>app-value</code>, <code>app-value-lg</code>, <code>app-text</code>. Checkbox and switch rows: <code>app-check</code></td></tr>
-<tr><td>Buttons</td><td><code>app-btn</code> with <code>app-btn-primary</code>, <code>app-btn-outline</code> or <code>app-btn-danger</code></td></tr>
-<tr><td>Status</td><td><code>app-pill</code> with <code>-info</code>, <code>-success</code>, <code>-warning</code> or <code>-danger</code>; <code>app-alert-warning</code>; <code>app-panel</code> with <code>-info</code> or <code>-danger</code></td></tr>
-<tr><td>Data</td><td><code>app-table</code>, <code>app-attach-table</code>, the <code>app-kpi</code> family, <code>app-link</code>, <code>app-icon-link</code>, <code>app-icon-link-danger</code>, <code>app-icon-warn</code></td></tr>
-<tr><td>Lists</td><td><code>app-list-stack</code>, <code>app-list-row</code>, <code>app-rule</code></td></tr>
-<tr><td>Workflow</td><td><code>app-step-done</code>, <code>app-step-current</code>, <code>app-step-pending</code>, <code>app-step-name</code></td></tr>
-<tr><td>Upload</td><td><code>app-dropzone</code>, <code>app-upload-row</code></td></tr>
-</tbody></table>
-<p class="muted">The <a class="inl" href="widgets.html">custom widgets</a> are built from these classes; each one lists the classes it uses.</p>
-</div>
-
-<h2 id="choose">How to choose</h2>
-<div class="card">
-<ul>
-<li><strong>Record or detail screen:</strong> <code>app-page-wide</code>, then <code>app-split</code> with a main and a side column. Each section is an <code>app-card app-card-sm app-stack</code>, with an <code>app-row</code> heading and an <code>app-grid app-cols-N</code> body.</li>
-<li><strong>A field:</strong> an <code>app-field app-field-stack</code> container holding the label and the input. In read-only mode, show the value as text with <code>app-label</code> and <code>app-value</code>, not as a disabled input.</li>
-<li><strong>Status chips:</strong> <code>app-pill</code> with a variant. If the color depends on data, pick the variant with an If expression in the Style property (or use the <a class="inl" href="widgets.html#new">StatusBadge</a> block, which does this for you).</li>
-<li><strong>Something missing:</strong> add one shared <code>app-*</code> class to the stylesheet, document it here, and use it. Don’t create a screen class.</li>
-</ul>
-</div>
-
 <h2 id="screens">Detail and edit screens</h2>
 <div class="card">
 <p>Detail and edit screens are being merged into <strong>one screen per record type</strong>, with an edit-mode flag: View shows values as text, Edit shows the inputs, and the <a class="inl" href="buttons.html">header buttons</a> switch with the mode.</p>
-<p><code>NCRDetailScreen</code> is the pilot. It’s only partly done and can’t replace the edit screen yet, so it isn’t the template to copy until stage 2 is finished. The <em>Details/Edit Screen Template</em> page will document its structure then.</p>
+<p><code>NCRDetailScreen</code> is the pilot. It’s only partly done and can’t replace the edit screen yet, so don’t copy its current structure. The target is the <a class="inl" href="template.html">Details/Edit Screen Template</a> and its NCR workspace mockup.</p>
 </div>
 
-<h2 id="legacy">Legacy classes, being migrated</h2>
+<h2 id="legacy">Legacy: don’t copy from these screens</h2>
 <div class="card">
-<p>These families are still screen-specific and will be removed as their screens move: <code>cc-</code>, <code>rc-</code>, <code>cw-</code>, <code>capa-</code>, <code>ncr-</code>, <code>mrb-</code>, <code>main-</code>, <code>kpi-</code>, <code>adv-</code>, <code>event-</code>.</p>
+<p><strong>Every screen except the NCR detail and edit screens</strong> still uses old per-screen classes: MRB, CAPA, the NCR list and the rest. Don’t copy markup or classes from them.</p>
+<p>The families being removed: <code>cc-</code>, <code>rc-</code>, <code>cw-</code>, <code>capa-</code>, <code>ncr-</code> (NCR list only), <code>mrb-</code>, <code>main-</code>, <code>kpi-</code>, <code>adv-</code>, <code>event-</code>.</p>
 <ul>
-<li>Don’t copy them to new screens.</li>
+<li>Don’t use them on new screens.</li>
 <li>When you touch one of those screens, migrate it to <code>app-*</code> classes in the same change.</li>
 </ul>
-<p class="muted"><code>ncr-</code> is still listed because the NCR list screen uses it; the NCR detail and edit screens no longer do.</p>
+</div>
+
+<h2 id="gaps">Known gaps</h2>
+<div class="card">
+<ul>
+<li><strong>Multi-line text areas</strong> have no shared class yet.</li>
+<li><code>.app-form-footer .btn</code> still overrides the button size in form footers. Whether it stays is undecided.</li>
+<li>Some <code>!important</code> rules and the legacy families above are still in the stylesheet.</li>
+</ul>
+<p class="muted">Until a gap has a shared class, ask rather than writing a screen rule.</p>
+</div>
+
+<h2 id="ask">Asking for a new shared class</h2>
+<div class="card">
+<ol style="margin:0;padding-left:18px">
+<li>Check the shared classes and the <a class="inl" href="widgets.html">custom widgets</a> first: most needs are a combination of existing classes.</li>
+<li>Ask the theme owner, with the screen, what’s missing, and what you tried.</li>
+<li>If it’s agreed: add one <code>app-*</code> class to the shared layer (tokens only, no screen name), add it to the guide comment at the top of the stylesheet and to this page, then use it.</li>
+</ol>
 </div>
 
 <h2 id="saving">Before saving the stylesheet</h2>
