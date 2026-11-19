@@ -2,10 +2,10 @@
 docs/quality-engineering/quality-event-capa/:
 
   sign-in.html, home.html                     sign-in and the home dashboard
-  qe-workspace.html                           Quality Event workspace (View and Edit)
+  qe-list.html, qe-workspace.html             Quality Event list and workspace (View and Edit)
   ncr-list.html, ncr-workspace.html           NCR list and workspace (View and Edit)
-  mrb-workspace.html                          MRB review and disposition (View and Edit)
-  capa-workspace.html                         CAPA workspace (View and Edit)
+  mrb-list.html, mrb-workspace.html           MRB list, review and disposition (View and Edit)
+  capa-list.html, capa-workspace.html         CAPA list and workspace (View and Edit)
 
 They use docs/assets/app.css (the app-* classes and tokens) and docs/assets/icons.svg
 (Phosphor names). All data is the fictional demo scenario. Edit this script, then run:
@@ -72,8 +72,8 @@ def num(text):
 
 # ---------- shell: LayoutSideMenu stand-in ----------
 MENU = [
-    ("house", "Home", "home.html"), ("warning", "Quality Events", "qe-workspace.html"), ("file-x", "NCRs", "ncr-list.html"),
-    ("users-three", "MRB", "mrb-workspace.html"), ("shield-check", "CAPA", "capa-workspace.html"), ("arrows-clockwise", "SCAR", None),
+    ("house", "Home", "home.html"), ("warning", "Quality Events", "qe-list.html"), ("file-x", "NCRs", "ncr-list.html"),
+    ("users-three", "MRB", "mrb-list.html"), ("shield-check", "CAPA", "capa-list.html"), ("arrows-clockwise", "SCAR", None),
     ("tree-structure", "Lot Trace", None), ("list-checks", "My Actions", None),
     ("-", "Insights", None), ("chart-bar", "Reports", None), ("gear", "Administration", None),
 ]
@@ -301,49 +301,147 @@ ROWS = [
 ]
 
 
-def ncr_list():
-    rows = []
-    for n, title, mat, st, sev, lot, held, sup, owner, opened, overdue in ROWS:
-        href = "ncr-workspace.html" if n == "NCR-2026-00143" else "#"
-        warn = f' <span class="app-icon-warn" title="Has overdue actions">{ic("clock")}</span>' if overdue else ""
-        rows.append(f"""<tr>
-<td class="app-num">{link(n, href)}{warn}</td>
-<td>{escape(title)}<br><span class="app-label">{mat}</span></td>
-<td>{status(st)}</td><td>{severity(sev)}</td>
-<td class="app-num">{lot}{' ' + HOLD if held else ''}</td>
-<td>{escape(sup)}</td><td>{owner}</td><td class="app-num">{opened}</td>
-<td style="white-space:nowrap"><a class="app-icon-link" href="{href}" title="Open" aria-label="Open {n}">{ic("eye")}</a>{more_link()}</td>
-</tr>""")
-    kpis = [("Open NCRs", "14", "4 opened this week", False), ("In containment", "5", "2 with held material", False),
-            ("Waiting on QA", "4", "QA Triage and QA Approval", False), ("Overdue actions", "3", "On 2 NCRs", True)]
+def list_screen(*, title, active, heading, desc, new_label, kpis, statuses, extra_filters, headers, rows, count, search):
+    """The list template: title and buttons, four KPI cards, one filter row, the table, paging.
+    kpis: (label, value, note, warn). rows: lists of cell html (the first cell holds the record link)."""
     kpi_html = "".join(
         f'<a class="app-kpi" href="#"><span class="app-kpi-label">{l}</span><span class="app-kpi-value app-num">{v}</span>'
         f'<span class="app-kpi-note">{(ic("clock") + " ") if w else ""}{n}</span></a>' for l, v, n, w in kpis)
-    options = "".join(f"<option>{s}</option>" for s in NCR_STATUSES)
+    options = "".join(f"<option>{st}</option>" for st in statuses)
+    filters = "".join('<select class="mock-input" style="width:auto">' + "".join(f"<option>{o}</option>" for o in opts) + "</select>"
+                      for opts in extra_filters)
+    head = "".join(f"<th>{h}</th>" for h in headers) + '<th><span class="app-label">Actions</span></th>'
+    body_rows = []
+    for r in rows:
+        href = r[0].split(chr(34))[3] if "href" in r[0] else "#"
+        body_rows.append(f'<tr><td class="app-num">{r[0]}</td>' + "".join(f"<td>{c}</td>" for c in r[1:])
+                         + f'<td style="white-space:nowrap"><a class="app-icon-link" href="{href}" title="Open" aria-label="Open">{ic("eye")}</a>{more_link()}</td></tr>')
     body = f"""<main class="app-page-wide">
 <div class="app-page-header">
-<div class="app-row"><div><h1 style="margin:0;font-size:24px">Nonconformances</h1>
-<div class="app-label" style="font-size:13px">Material, product and process conditions that don’t meet requirements</div></div>
-<div class="app-actions"><button class="btn">{ic("download-simple")}Export</button><button class="btn btn-primary">{ic("plus")}New NCR</button></div></div>
+<div class="app-row"><div><h1 style="margin:0;font-size:24px">{heading}</h1>
+<div class="app-label" style="font-size:13px">{desc}</div></div>
+<div class="app-actions"><button class="btn">{ic("download-simple")}Export</button><button class="btn btn-primary">{ic("plus")}{new_label}</button></div></div>
 </div>
 <div class="app-stack">
 <div class="app-grid app-cols-4">{kpi_html}</div>
 <div class="app-card app-card-sm app-stack">
 <div class="app-row">
-<input class="mock-input" style="flex:1 1 260px;width:auto" placeholder="Search NCR number, title, material, lot or supplier">
+<input class="mock-input" style="flex:1 1 260px;width:auto" placeholder="{search}">
 <select class="mock-input" style="width:auto"><option>All open statuses</option>{options}</select>
-<select class="mock-input" style="width:auto"><option>Any severity</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select>
-<select class="mock-input" style="width:auto"><option>Any owner</option><option>Me</option></select>
+{filters}
 <button class="btn">{ic("funnel")}More filters</button>
 </div>
-<div style="overflow-x:auto"><table class="app-table">
-<thead><tr><th>NCR</th><th>Title · material</th><th>Status</th><th>Severity</th><th>Lot</th><th>Supplier / source</th><th>Owner</th><th>Opened</th><th><span class="app-label">Actions</span></th></tr></thead>
-<tbody>{''.join(rows)}</tbody></table></div>
-<div class="app-row"><span class="app-label">Showing 1–10 of 14 open NCRs</span><span class="app-actions"><button class="btn" disabled>Previous</button><button class="btn">Next</button></span></div>
+<div style="overflow-x:auto"><table class="app-table"><thead><tr>{head}</tr></thead><tbody>{"".join(body_rows)}</tbody></table></div>
+<div class="app-row"><span class="app-label">{count}</span><span class="app-actions"><button class="btn" disabled>Previous</button><button class="btn">Next</button></span></div>
 </div>
 </div>
 </main>"""
-    return shell("NCR list", "NCRs", body)
+    return shell(title, active, body)
+
+
+SEVERITIES = ["Any severity", "Low", "Medium", "High", "Critical"]
+OWNERS = ["Any owner", "Me"]
+
+
+def overdue(flag):
+    return f' <span class="app-icon-warn" title="Has overdue actions">{ic("clock")}</span>' if flag else ""
+
+
+def titled(title, sub):
+    return f'{escape(title)}<br><span class="app-label">{sub}</span>'
+
+
+def ncr_list():
+    rows = [[link(n, "ncr-workspace.html" if n == "NCR-2026-00143" else "#") + overdue(od), titled(t, mat), status(st), severity(sev),
+             num(lot) + (" " + HOLD if held else ""), escape(sup), owner, num(opened)]
+            for n, t, mat, st, sev, lot, held, sup, owner, opened, od in ROWS]
+    return list_screen(
+        title="NCR list", active="NCRs", heading="Nonconformances", new_label="New NCR",
+        desc="Material, product and process conditions that don’t meet requirements",
+        kpis=[("Open NCRs", "14", "4 opened this week", False), ("In containment", "5", "2 with held material", False),
+              ("Waiting on QA", "4", "QA Triage and QA Approval", False), ("Overdue actions", "3", "On 2 NCRs", True)],
+        statuses=NCR_STATUSES, extra_filters=[SEVERITIES, OWNERS],
+        headers=["NCR", "Title · material", "Status", "Severity", "Lot", "Supplier / source", "Owner", "Opened"],
+        rows=rows, count="Showing 1–10 of 14 open NCRs", search="Search NCR number, title, material, lot or supplier")
+
+
+QE_ROWS = [
+    ("QE-2026-00192", "Cracked bracket weld", "FG-31007 · Line 3", "Submitted", "Medium", "In-process inspection", "Kevin Jones", "09/15/2026", False, False),
+    ("QE-2026-00191", "Customer complaint: loose fasteners", "FS-0880 · Apex Industrial Systems", "Under Review", "High", "Customer complaint", "Maria Lopez", "09/14/2026", False, False),
+    ("QE-2026-00190", "Resin moisture above limit", "PL-5520 · lot PL55-0790", "Contained", "Medium", "Laboratory / test", "David Kim", "09/12/2026", True, False),
+    ("QE-2026-00189", "Paint adhesion failure on cover", "FG-20415 · Line 2", "Action Required", "Medium", "Final inspection", "Kevin Jones", "09/08/2026", False, True),
+    ("QE-2026-00188", "Spindle vibration out of limit", "Machine MC-04", "Investigation", "Low", "Equipment", "David Kim", "09/02/2026", False, False),
+    ("QE-2026-00187", "RM-1042 shafts oversize", "RM-1042 · lot RM48-9817", "Investigation", "High", "Incoming inspection", "Maria Lopez", "08/25/2026", True, True),
+    ("QE-2026-00186", "Casting porosity", "CS-2210 · lot CS22-4410", "Action Required", "Medium", "Incoming inspection", "Kevin Jones", "08/22/2026", True, False),
+    ("QE-2026-00185", "Label misprint on carton", "PK-0311 · Packaging", "Verification", "Low", "Final inspection", "Sarah Mitchell", "08/21/2026", False, False),
+    ("QE-2026-00184", "Heat-treat certificate missing", "RM-2040 · lot RM20-5530", "Investigation", "Critical", "Supplier", "Maria Lopez", "08/11/2026", True, True),
+    ("QE-2026-00183", "Scratch on cover", "FG-20415", "Draft", "Low", "In-process inspection", "Sarah Mitchell", "08/10/2026", False, False),
+]
+
+
+def qe_list():
+    rows = [[link(n, "qe-workspace.html" if n == "QE-2026-00187" else "#") + overdue(od), titled(t, sub) + (" " + HOLD if held else ""),
+             status(st), severity(sev), src, owner, num(d)]
+            for n, t, sub, st, sev, src, owner, d, held, od in QE_ROWS]
+    return list_screen(
+        title="Quality Event list", active="Quality Events", heading="Quality Events", new_label="New Quality Event",
+        desc="Every quality issue, from the moment it’s found to closure",
+        kpis=[("Open events", "12", "3 reported this week", False), ("Awaiting review", "3", "Not yet assigned an engineer", False),
+              ("Contained", "4", "Material on hold", False), ("Overdue actions", "2", "On 2 events", True)],
+        statuses=QE_STATUSES, extra_filters=[SEVERITIES, ["Any source", "Incoming inspection", "In-process inspection", "Final inspection", "Customer complaint", "Supplier", "Equipment"], OWNERS],
+        headers=["Event", "Title · what and where", "Status", "Severity", "Source", "Owner", "Detected"],
+        rows=rows, count="Showing 1–10 of 12 open events", search="Search event number, title, material, lot or customer")
+
+
+MRB_ROWS = [
+    ("MRB-2026-00084", "CS22-4410 castings", "NCR-2026-00142", "Under Review", "60", "Use As Is (proposed)", "2 of 3", "Today", "Kevin Jones", False),
+    ("MRB-2026-00083", "PL55-0712 seals", "NCR-2026-00139", "Information Requested", "300", "Return to Vendor (proposed)", "1 of 3", "09/14/2026", "David Kim", True),
+    ("MRB-2026-00082", "FS08-2291 fasteners", "NCR-2026-00140", "Approved", "1,200", "Sort / 100% Inspect", "3 of 3", "09/10/2026", "Maria Lopez", False),
+    ("MRB-2026-00081", "RM-1042 shafts, 160 held", "NCR-2026-00143", "Completed", "160", "Sort / 100% Inspect", "4 of 4", "08/29/2026", "Maria Lopez", False),
+    ("MRB-2026-00080", "MC77-3302 housings", "NCR-2026-00135", "Under Review", "24", "Rework (proposed)", "0 of 3", "09/18/2026", "David Kim", False),
+    ("MRB-2026-00079", "PK03-1187 cartons", "NCR-2026-00141", "Draft", "4,000", "–", "–", "–", "Sarah Mitchell", False),
+    ("MRB-2026-00077", "PL55-0650 resin", "NCR-2026-00131", "Completed", "800", "Return to Vendor", "3 of 3", "08/02/2026", "Kevin Jones", False),
+]
+
+
+def mrb_list():
+    rows = [[link(n, "mrb-workspace.html" if n == "MRB-2026-00081" else "#") + overdue(od), titled("Disposition for " + t, "From " + ncr),
+             status(st), num(q), disp, num(appr), num(due), who]
+            for n, t, ncr, st, q, disp, appr, due, who, od in MRB_ROWS]
+    return list_screen(
+        title="MRB list", active="MRB", heading="Material Review Board", new_label="New MRB",
+        desc="Decisions on nonconforming material: what to do with it and who approved",
+        kpis=[("Under review", "3", "Waiting on approvers", False), ("Waiting on me", "1", "MRB-2026-00084 · due today", False),
+              ("Information requested", "1", "Past its decision date", True), ("Completed (30 days)", "5", "1,960 units dispositioned", False)],
+        statuses=MRB_STATUSES + ["Information Requested", "Rejected"],
+        extra_filters=[["Any disposition", "Use As Is", "Rework", "Repair", "Sort / 100% Inspect", "Scrap", "Return to Vendor"], ["Any approver", "Me"]],
+        headers=["MRB", "Material · NCR", "Status", "Quantity", "Disposition", "Approvals", "Decision due", "Requested by"],
+        rows=rows, count="Showing 1–7 of 7 MRBs", search="Search MRB number, NCR, material or lot")
+
+
+CAPA_ROWS = [
+    ("CAPA-2026-00034", "Fastener torque loss at customer", "QE-2026-00191 · complaint", "Investigation", "High", "Summit Fasteners", "0 of 0", "Maria Lopez", "11/15/2026", False),
+    ("CAPA-2026-00033", "Seal hardness drift", "NCR-2026-00139", "Root Cause Identified", "High", "Delta Polymer Supply", "0 of 0", "David Kim", "11/01/2026", False),
+    ("CAPA-2026-00032", "Paint adhesion on covers", "QE-2026-00189", "Action Plan", "Medium", "Internal (Paint)", "0 of 3", "Kevin Jones", "10/20/2026", False),
+    ("CAPA-2026-00031", "Tool-wear drift on RM-1042", "NCR-2026-00143 · SCAR-2026-00024", "Implementation", "High", "ABC Precision Components", "2 of 4", "Maria Lopez", "10/30/2026", False),
+    ("CAPA-2026-00030", "Heat-treat certificates missing", "NCR-2026-00137", "Implementation", "Critical", "Keystone Alloys", "1 of 3", "Maria Lopez", "09/12/2026", True),
+    ("CAPA-2026-00029", "Weld spatter on brackets", "NCR-2026-00138", "Effectiveness Review", "Low", "Internal (Line 3)", "3 of 3", "Kevin Jones", "10/05/2026", False),
+    ("CAPA-2026-00027", "Wrong resin grade received", "NCR-2026-00131", "Closed", "Medium", "Delta Polymer Supply", "2 of 2", "Kevin Jones", "08/30/2026", False),
+]
+
+
+def capa_list():
+    rows = [[link(n, "capa-workspace.html" if n == "CAPA-2026-00031" else "#") + overdue(od), titled(t, "From " + src),
+             status(st), severity(sev), escape(sup), num(acts), owner, num(due)]
+            for n, t, src, st, sev, sup, acts, owner, due, od in CAPA_ROWS]
+    return list_screen(
+        title="CAPA list", active="CAPA", heading="Corrective and Preventive Actions", new_label="New CAPA",
+        desc="Root causes being found and fixed, and checks that the fixes worked",
+        kpis=[("Open CAPAs", "6", "2 started this month", False), ("In implementation", "2", "3 of 7 actions verified", False),
+              ("Effectiveness review", "1", "Check ends 10/05/2026", False), ("Past due", "1", "CAPA-2026-00030", True)],
+        statuses=CAPA_STATUSES, extra_filters=[SEVERITIES, ["Any supplier", "ABC Precision Components", "Delta Polymer Supply", "Keystone Alloys", "Summit Fasteners", "Internal"], OWNERS],
+        headers=["CAPA", "Title · started from", "Status", "Severity", "Supplier / area", "Actions verified", "Owner", "Due"],
+        rows=rows, count="Showing 1–7 of 7 CAPAs", search="Search CAPA number, title, supplier or linked record")
 
 
 # ======================================================================
@@ -489,7 +587,7 @@ def qe_workspace():
                   "<strong>Next step.</strong> Send a reminder to Mark Stevens: the SCAR response is due in 3 days."),
     ])
     return workspace(
-        title="Quality Event Workspace", active="Quality Events", back=("Quality Events", "#"), kind="Quality Event",
+        title="Quality Event Workspace", active="Quality Events", back=("Quality Events", "qe-list.html"), kind="Quality Event",
         number="QE-2026-00187", pills=status("Investigation") + severity("High") + HOLD, subtitle="RM-1042 shafts oversize at incoming inspection",
         primary=("Move to Verification", "check", "Available when the SCAR and CAPA are done"),
         actions=[("Edit", "pencil-simple"), ("Trace Lot", "arrow-right"), ("Add Action", "plus")],
@@ -552,7 +650,7 @@ def mrb_workspace():
                   "<strong>Past decisions.</strong> 2 earlier MRBs on RM-1042 chose Sort / 100% Inspect; rejects averaged 14%."),
     ])
     return workspace(
-        title="MRB Review &amp; Disposition", active="MRB", back=("MRB", "#"), kind="MRB",
+        title="MRB Review &amp; Disposition", active="MRB", back=("MRB", "mrb-list.html"), kind="MRB",
         number="MRB-2026-00081", pills=status("Under Review") + severity("High"), subtitle="Disposition for 160 held RM-1042 shafts",
         primary=("Complete MRB", "check", "Waiting on 3 of 4 approvers"),
         actions=[("Edit", "pencil-simple"), ("Trace Lot", "arrow-right"), ("Send Reminder", "bell")],
@@ -618,7 +716,7 @@ def capa_workspace():
                   "<strong>Check the scope.</strong> RM-1043 and RM-1050 run on the same lathe; consider adding their next lots to the effectiveness check."),
     ])
     return workspace(
-        title="CAPA Workspace", active="CAPA", back=("CAPA", "#"), kind="CAPA",
+        title="CAPA Workspace", active="CAPA", back=("CAPA", "capa-list.html"), kind="CAPA",
         number="CAPA-2026-00031", pills=status("Implementation") + severity("High"), subtitle="Stop tool-wear drift on RM-1042 at ABC Precision Components",
         primary=("Move to Effectiveness Review", "arrow-right", "Available when all 4 actions are verified"),
         actions=[("Edit", "pencil-simple"), ("Add Action", "plus"), ("Send Reminder", "bell")],
@@ -637,9 +735,9 @@ def capa_workspace():
 # ======================================================================
 # Home dashboard and sign-in
 # ======================================================================
-MODULES = [("warning", "Quality Events", "Record an issue in about a minute and follow it to closure.", "12 open", "qe-workspace.html"),
+MODULES = [("warning", "Quality Events", "Record an issue in about a minute and follow it to closure.", "12 open", "qe-list.html"),
            ("file-x", "NCR &amp; MRB", "Document nonconformances, contain them and decide the disposition.", "14 NCRs · 3 MRBs", "ncr-list.html"),
-           ("shield-check", "CAPA &amp; SCAR", "Find root causes, fix them with suppliers and check the fix worked.", "6 CAPAs · 4 SCARs", "capa-workspace.html"),
+           ("shield-check", "CAPA &amp; SCAR", "Find root causes, fix them with suppliers and check the fix worked.", "6 CAPAs · 4 SCARs", "capa-list.html"),
            ("tree-structure", "Lot Trace", "See where a lot came from, where it went and who received it.", "2 lots on hold", "#")]
 
 
@@ -715,7 +813,7 @@ def sign_in():
 def build():
     out = DOCS / APP
     for name, fn in [("sign-in.html", sign_in), ("home.html", home), ("qe-workspace.html", qe_workspace),
-                     ("ncr-list.html", ncr_list), ("ncr-workspace.html", ncr_workspace),
+                     ("qe-list.html", qe_list), ("ncr-list.html", ncr_list), ("ncr-workspace.html", ncr_workspace), ("mrb-list.html", mrb_list), ("capa-list.html", capa_list),
                      ("mrb-workspace.html", mrb_workspace), ("capa-workspace.html", capa_workspace)]:
         (out / name).write_text(fn(), encoding="utf-8")
         print(f"Wrote {out / name}")
