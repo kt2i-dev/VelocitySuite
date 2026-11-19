@@ -38,7 +38,7 @@ branch → main / docs**). No build step and no workflow.
 | `docs/theme.html`, `docs/template.html`, `docs/review.html` | Theme conventions, the Details/Edit Screen Template and the Review checklist |
 | `docs/assets/app.css`, `docs/assets/icons.svg` | The app stylesheet (app-* classes and tokens) and Phosphor-named icons the screen mockups use |
 | `tools/build_buttons.py` | Builds the Button standard page. Edit the button list there and rerun it |
-| `tools/build_screens.py` | Builds the screen mockups (`ncr-list.html`, `ncr-workspace.html`). Edit there and rerun it |
+| `tools/build_screens.py` | Builds the screen mockups in `quality-event-capa/` (sign-in, home, Quality Event, NCR list and workspace, MRB, CAPA). Edit there and rerun it |
 | `tools/build_icons.py` | Builds `docs/assets/icons.svg` from the button icons plus the menu and status icons |
 | `tools/build_data_model.py` | Builds the Quality Event & CAPA data model page. Edit the entity list there and rerun it, rather than editing `data-model.html` |
 

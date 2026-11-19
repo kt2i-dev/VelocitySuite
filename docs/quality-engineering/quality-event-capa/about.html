@@ -194,6 +194,7 @@
 <div class="card">
 <p class="muted">The source documents disagree on these. This page follows the UI/UX build specification.</p>
 <ul>
+<li><strong>Statuses:</strong> <em>Decided for now:</em> the mockups use the status values in the app’s database (the <code>NCRStatus</code> lookup and the others), not the specs’ lifecycles. NCR uses the database’s values: Draft, Submitted, QA Triage, Containment, Investigation, Disposition, Root Cause, CAPA Actions, Effectiveness, QA Approval, Closed. Quality Event, MRB and CAPA still show the UI/UX spec’s lifecycles below until their database values are listed. Screens show each status’s <code>Label</code> (“QA Triage”), not its Id (“QaTriage”).</li>
 <li><strong>CAPA:</strong> the functional spec adds Containment and a separate Quality Approval step (Initiated → Containment → Investigation → Root Cause → Corrective Action Plan → Implementation → Effectiveness Verification → Quality Approval → Closed).</li>
 <li><strong>SCAR:</strong> the functional spec splits Supplier Response into Containment Submitted, Root Cause Submitted and Corrective Action Submitted, and the overview deck leaves out Implementation.</li>
 <li><strong>MRB:</strong> the overview deck shows Draft → Under Review → Disposition → Approval → Completed.</li>

@@ -6,8 +6,13 @@
 <p>One screen per record type, with a View mode and an Edit mode. Every record workspace (Quality Event, NCR, MRB, CAPA, SCAR) is built this way, from the shared classes on the <a class="inl" href="theme.html">Theme</a> page.</p>
 <div class="row c2">
 <a class="tile" href="quality-engineering/quality-event-capa/ncr-workspace.html">NCR workspace mockup<span>The template applied to NCR-2026-00143, in View mode. Switch to Edit with the bar at the top.</span></a>
-<a class="tile" href="quality-engineering/quality-event-capa/ncr-list.html">NCR list mockup<span>The list that opens it: KPIs, filters, the table and row actions</span></a>
+<a class="tile" href="quality-engineering/quality-event-capa/qe-workspace.html">Quality Event workspace mockup<span>The same template on QE-2026-00187, the parent of the NCR, MRB, SCAR and CAPA</span></a>
+<a class="tile" href="quality-engineering/quality-event-capa/mrb-workspace.html">MRB workspace mockup<span>The template with an approval panel: MRB-2026-00081 under review</span></a>
+<a class="tile" href="quality-engineering/quality-event-capa/capa-workspace.html">CAPA workspace mockup<span>The template on CAPA-2026-00031: root cause, 5 Whys, actions and effectiveness</span></a>
+<a class="tile" href="quality-engineering/quality-event-capa/ncr-list.html">NCR list mockup<span>The list that opens a record: KPIs, filters, the table and row actions</span></a>
+<a class="tile" href="quality-engineering/quality-event-capa/home.html">Home dashboard and sign-in<span>The welcome band and module cards, borrowed from the landing-page mockups</span></a>
 </div>
+<p class="muted">Each mockup shows the demo scenario at a different point: the NCR on day one (08/25/2026), the MRB under review (08/28/2026), and the Quality Event, CAPA and home dashboard on 09/15/2026.</p>
 <div class="toc"><a href="#anatomy">Anatomy</a><a href="#modes">View and Edit</a><a href="#rules">Rules</a><a href="#build">Building it</a><a href="#list">The list screen</a><a href="#changed">What changes from today’s NCR screens</a><a href="#proposed">Proposed classes</a></div>
 
 <h2 id="anatomy">Anatomy, top to bottom</h2>
@@ -72,12 +77,25 @@
 <li>Detail and edit are one screen; the edit form no longer has the detail view repeated below it.</li>
 <li>NCR number, status, quality event, material, lot and supplier appear once instead of two or three times.</li>
 <li>The page title is the record, not “NCR &amp; Containment Workspace”.</li>
-<li>Status labels are readable (“Awaiting MRB”, not “QaTriage”) and follow the UI/UX spec’s lifecycle. Four pill colors by meaning: grey draft, blue in progress, amber waiting on someone, green done.</li>
+<li>Status labels are readable: the lookup’s Label (“QA Triage”), not its Id (“QaTriage”). Pill colors follow the <a class="inl" href="#status-colors">status colors</a> below.</li>
 <li>Severity colors only for High and Critical.</li>
 <li>One date format; the stepper fits the width; the separate Workflow card is gone.</li>
 <li>Validation Rules became Closure readiness, with live checks.</li>
 <li>List: one primary button, consistent NCR numbers (NCR-2026-00143), Responsible Department moved to the filters.</li>
 </ul></div>
+
+<h2 id="status-colors">Status colors</h2>
+<div class="card">
+<p>The StatusBadge block maps each status to one of five pill colors by what it means, so a status looks the same on every screen. In OutSystems, the lookup’s <code>Color</code> attribute can hold the variant name.</p>
+<table class="dm"><thead><tr><th>Pill</th><th>Means</th><th>Statuses</th></tr></thead><tbody>
+<tr><td><code>app-pill</code> (grey)</td><td>Not started</td><td>Draft, Not Started, Pending</td></tr>
+<tr><td><code>app-pill-info</code> (blue)</td><td>In progress</td><td>NCR: Submitted, Containment, Investigation, Root Cause, CAPA Actions, Effectiveness. Quality Event: Submitted, Contained, Investigation, Verification. MRB: Approved. CAPA: everything between Draft and Closed. Actions: In Progress.</td></tr>
+<tr><td><code>app-pill-warning</code> (amber)</td><td>Waiting on someone</td><td>NCR: QA Triage, Disposition, QA Approval. Quality Event: Under Review, Action Required. MRB: Under Review, Information Requested. SCAR: Supplier Response.</td></tr>
+<tr><td><code>app-pill-success</code> (green)</td><td>Done</td><td>Closed, Completed, Verified, Released</td></tr>
+<tr><td><code>app-pill-danger</code> (red)</td><td>Blocked or held</td><td>Rejected, Overdue, an Active hold, the HOLD marker</td></tr>
+</tbody></table>
+<p class="muted">Severity: Low and Medium as plain text, High amber, Critical red.</p>
+</div>
 
 <h2 id="proposed">Proposed classes and tokens</h2>
 <div class="card">
@@ -88,6 +106,8 @@
 <li><code>app-steps</code> and <code>app-step-dot</code>: the stepper’s container and circle.</li>
 <li><code>app-kpi-label</code>, <code>app-kpi-value</code>, <code>app-kpi-note</code>: the parts of a KPI card.</li>
 <li><code>--app-menu-background</code>, <code>--app-brand-navy</code>, <code>--app-brand-amber</code>: the KT2i navy side menu with an amber active marker, taken from the landing-page mockups.</li>
+<li><code>app-hero</code>, <code>app-hero-title</code>, <code>app-hero-accent</code>: the navy welcome band on the home dashboard and the sign-in screen.</li>
+<li><code>app-icon-badge</code>: an icon in a tinted square, for the module cards on the home dashboard.</li>
 </ul>
 <p class="muted">The side menu, top bar, tabs and inputs in the mockups stand in for OutSystems UI widgets (<code>mock-*</code> classes); they aren’t app classes.</p>
 </div>

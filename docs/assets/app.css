@@ -118,7 +118,7 @@ svg.i{width:18px;height:18px;flex:none;vertical-align:middle}
 .app-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .app-table th{padding:10px 12px;border-bottom:1px solid var(--app-border);background:var(--app-surface-alt);color:var(--app-text-muted);font-size:12px;font-weight:600;text-align:left;white-space:nowrap}
 .app-table td{padding:10px 12px;border-bottom:1px solid var(--app-border);vertical-align:middle}
-.app-table td.app-num{white-space:nowrap}
+.app-table .app-num,.app-link.app-num{white-space:nowrap}
 .app-table tbody tr:hover{background:var(--app-surface-alt)}
 .app-attach-table{width:100%;border-collapse:collapse;font-size:13px}
 .app-attach-table td{padding:8px 0;border-bottom:1px solid var(--app-border)}
@@ -157,6 +157,16 @@ svg.i{width:18px;height:18px;flex:none;vertical-align:middle}
 .app-dropzone{display:flex;align-items:center;justify-content:center;gap:8px;padding:16px;border:1.5px dashed var(--app-border);border-radius:var(--app-radius-s);color:var(--app-text-muted);font-size:13px}
 .app-upload-row{display:flex;align-items:center;gap:10px}
 
+/* ---------- Home and sign-in (PROPOSED) ---------- */
+.app-hero{display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between;padding:24px 28px;border-radius:var(--app-radius-m);background:var(--app-brand-navy);color:var(--app-surface)}
+.app-hero .app-label,.app-hero .app-text{color:var(--app-menu-text-color)}
+.app-hero-title{margin:0;font-size:26px;font-weight:700;line-height:1.2}
+.app-hero-accent{color:var(--app-brand-amber)}
+.app-icon-badge{display:inline-flex;align-items:center;justify-content:center;flex:none;width:40px;height:40px;border-radius:var(--app-radius-m);background:var(--app-accent-light);color:var(--app-accent)}
+.app-icon-badge svg.i{width:22px;height:22px}
+a.app-card{color:var(--app-text);text-decoration:none}
+a.app-card:hover{border-color:var(--app-accent)}
+
 /* ---------- Narrow screens ---------- */
 @media (max-width:1100px){
   .app-split{flex-direction:column}
@@ -164,7 +174,7 @@ svg.i{width:18px;height:18px;flex:none;vertical-align:middle}
   .app-cols-4{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media (max-width:640px){
-  .app-cols-2,.app-cols-3,.app-cols-4{grid-template-columns:1fr}
+  .app-cols-2,.app-cols-3,.app-cols-4{grid-template-columns:minmax(0,1fr)}
   .app-page,.app-page-wide{padding:16px}
 }
 
